@@ -16,13 +16,13 @@ var CONFIG = {
     // (Canvas itself is scaled to viewport)
     gameSize: {
         width: 800,
-        height: 600
+        height: 400
     },
 
     // Pixel size of the controller's Phaser canvas.
     controllerGameSize: {
-        width: 500,
-        height: 500
+        width: 400,
+        height: 800
     },
 
     // Font style definitions
