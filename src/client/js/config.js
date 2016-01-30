@@ -17,6 +17,12 @@ var CONFIG = {
         height: 1068
     },
 
+    // Pixel size of the controller's Phaser canvas.
+    controllerGameSize: {
+        width: 500,
+        height: 500
+    },
+
     // Font style definitions
     font: {
         // Generic/default text
