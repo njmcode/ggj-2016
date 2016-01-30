@@ -4,7 +4,13 @@ var id = Math.random();
 
 socket.on('connect', function() {
 	console.log('CONNECTED');
-    socket.emit('join', {game: game});
+    var data = {
+        game: game
+    };
+    if (window.location.hash) {
+        data.id = window.location.hash;
+    }
+    socket.emit('join', data);
 });
 
 socket.on('gesture', function(data) {
@@ -13,6 +19,7 @@ socket.on('gesture', function(data) {
 
 socket.on('join', function(data) {
     console.log(data);
+    window.location.hash = data.id;
 });
 
 /*setInterval(function() {
