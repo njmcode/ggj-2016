@@ -15,13 +15,13 @@ var Client = function(socket) {
 Client.prototype = {
     bindEvents: function() {
         this.socket.on('join', this.onJoin.bind(this));
-        this.socket.on('host', this.onDisconnect.bind(this));
+        this.socket.on('host', this.onHost.bind(this));
         this.socket.on('disconnect', this.onDisconnect.bind(this));
         this.socket.on('gesture', this.onGesture.bind(this));
         this.socket.on('status', this.onStatus.bind(this));
     },
     onHost: function(data) {
-        var self;
+        var self = this;
         this.game = data.game;
         db.getOrCreate(this.game, function() {
             self.socket.join(self.game);
