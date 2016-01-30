@@ -25,11 +25,15 @@ var httpHandlers = {
 
     index: function(req, res) {
         res.render('index');
+    },
+    controller: function(req, res) {
+        res.render('controller');
     }
 
 };
 
 app.get('/', httpHandlers.index);
+app.get('/controller', httpHandlers.controller);
 
 
 io.on('connection', function(socket) {
