@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>Digimancer</title>
     <style>
     	body, html {
@@ -14,8 +15,17 @@
     		background: black;
     		color: white;
     	}
+        canvas {
+            border: 1px solid blue;
+            text-align: center;
+            margin: 0 auto;
+        }
     </style>
     <script src="/public/phaser.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+     window._game = "{{game}}";
+    </script>
 </head>
 <body>
     {{{body}}}
