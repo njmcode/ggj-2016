@@ -4,7 +4,8 @@ var webpack = require("webpack");
 
 module.exports = {
     entry: {
-        'main': './boot.js'
+        'main': './boot.js',
+        'controller': './boot.controller.js'
     },
     output: {
         path: '../server/public/',
