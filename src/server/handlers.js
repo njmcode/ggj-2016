@@ -1,12 +1,15 @@
 'use strict';
 
 var randomstring = require('randomstring');
+var db = require('./database');
 
 var handlers = {
 
     createGame: function(req, res) {
         var gameKey = randomstring.generate(5);
-        res.redirect('/' + gameKey);
+        db.getOrCreate(gameKey, function() {
+            res.redirect('/' + gameKey);
+        });
     },
 
     observeGame: function(req, res) {
