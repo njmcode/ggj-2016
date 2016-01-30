@@ -9,10 +9,11 @@
 
 // Object list of assets to preload
 var assets = {
+
     // ui, scenes and images are standard image files.
     // Format is [key, path, width, height]
     ui: [
-       
+
     ],
     // Format is [key, path, width, height]
     images: [

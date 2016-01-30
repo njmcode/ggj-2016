@@ -23,8 +23,8 @@ var States = {
 function Main(){
     // Create a new game
     var game = new Phaser.Game(
-        CONFIG.gameSize.width,
-        CONFIG.gameSize.height,
+        CONFIG.controllerGameSize.width,
+        CONFIG.controllerGameSize.height,
         Phaser.AUTO
     );
 
