@@ -8,8 +8,6 @@ var CONFIG = {
 
     debug: {
         enabled: false,
-        showCursorPos: true,
-        showInteractions: true
     },
 
     // Pixel size of the Phaser canvas.
@@ -18,9 +16,6 @@ var CONFIG = {
         width: 1600,
         height: 1068
     },
-
-    // Which state to load once Startup state completes.
-    stateAfterStartup: 'Title',
 
     // Font style definitions
     font: {
@@ -43,11 +38,5 @@ var CONFIG = {
     },
 
 };
-
-// version of the default font for menu
-CONFIG.font.baseMenuStyle = Object.create(CONFIG.font.baseStyle);
-CONFIG.font.baseMenuStyle.font = '62px arial',
-CONFIG.font.baseMenuStyle.fill = '#ccc';
-
 
 module.exports = CONFIG;

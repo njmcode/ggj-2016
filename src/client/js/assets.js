@@ -12,18 +12,11 @@ var assets = {
     // ui, scenes and images are standard image files.
     // Format is [key, path, width, height]
     ui: [
-        //['cursor', 'static/assets/ui/cursor.png', 84, 120],
-    ],
-    // Format is [key, path, width, height]
-    // TODO: auto-gen this list from the rooms data
-    rooms: [
-        /*['room-TestRoom', 'static/assets/rooms/test/test-bg.png', 1200, 644],
-        ['room-TestRoom2', 'static/assets/rooms/test/test2-bg.png', 1200, 644],
-        ['room-TestRoom3', 'static/assets/rooms/test/test3-bg.png', 1200, 644]*/
+       
     ],
     // Format is [key, path, width, height]
     images: [
-        //['screen-title', 'static/assets/images/title.png', 1600, 1068],
+
     ],
     // Audio files to load
     sounds: [
@@ -51,17 +44,11 @@ var assets = {
  * @param fileLoadedCallback - function to fire when *each* file loads
 **/
 function preloadAssets(game, fileLoadedCallback){
-    var idx;
 
     game.load.onFileComplete.add(fileLoadedCallback, this);
 
     console.log('Preloading ui...');
     assets.ui.forEach(function(item) {
-        game.load.image(item[0], item[1], item[2], item[3]);
-    });
-
-    console.log('Preloading rooms...');
-    assets.rooms.forEach(function(item) {
         game.load.image(item[0], item[1], item[2], item[3]);
     });
 

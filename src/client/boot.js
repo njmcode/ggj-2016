@@ -11,6 +11,6 @@ if('serviceWorker' in navigator) {
 }
 */
 
-var Main = require('./src/main');
+var Main = require('./js/main');
 
 Main();
