@@ -4,7 +4,6 @@ var id = Math.random();
 
 socket.on('connect', function() {
 	console.log('CONNECTED');
-    socket.emit('join', {game: game});
 });
 
 socket.on('gesture', function(data) {

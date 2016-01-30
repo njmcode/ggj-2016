@@ -15,7 +15,8 @@ var handlers = {
     observeGame: function(req, res) {
         var joinURL = 'http://' + req.headers.host + '/c/' + req.params.game;
         res.render('master', {
-            joinURL: joinURL
+            joinURL: joinURL,
+            game: req.params.game
         });
     },
 

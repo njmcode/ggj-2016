@@ -4,7 +4,7 @@
 **/
 
 var CONFIG = require('../config');
-var IO = require('../io/controller-io');
+var IO = require('../io/io');
 
 var ControllerState = function(){};
 
@@ -43,6 +43,12 @@ ControllerState.prototype.create = function() {
     shieldButton = this.add.button(this.game.width * 0.5,
     	this.game.height * 0.75, 'icon-shield', _doShield);
     shieldButton.anchor.setTo(0.5, 0.5);
+
+    // Connect event
+    IO.socket.on('connect', function(data) {
+        IO.socket.emit('join', { game: IO.game });
+        console.log('CONNECTED AS PLAYER');
+    });
 
     // Receive gesture events
     IO.socket.on('gesture', function(data) {
