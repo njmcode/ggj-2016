@@ -1,0 +1,22 @@
+frontend:
+    image: node:5.2.0
+    volumes:
+        - ./src/client:/src
+        - /src/node_modules
+    working_dir: /src
+    command: make watch
+
+backend:
+    image: node:5.2.0
+    volumes:
+        - ./src/server:/src
+        - /src/node_modules
+    links:
+        - database
+    ports:
+        - 0.0.0.0:5000:5000
+    working_dir: /src
+    command: make run
+
+database:
+    image: redis
