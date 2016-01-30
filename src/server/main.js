@@ -1,6 +1,7 @@
 'use strict';
 
 var http = require('http');
+var redis = require('socket.io-redis');
 var express = require('express');
 var socketio = require('socket.io');
 var handlebars = require('express-handlebars');
@@ -8,22 +9,22 @@ var handlebars = require('express-handlebars');
 var app = express();
 var server = http.createServer(app);
 var io = socketio(server);
+io.adapter(redis({host: 'database'}));
 
 var handlers = require('./handlers');
-var SocketConnection = require('./sockets');
-
+var Client = require('./client');
 
 app.engine('.hbs', handlebars({
     defaultLayout: 'main',
     extname: '.hbs'
 }));
 app.set('view engine', '.hbs');
-
-io.on('connection', function(socket) {
-    new SocketConnection(socket);
-});
+app.use('/public', express.static('public'));
 
 handlers.bind(app);
+io.on('connection', function(socket) {
+    new Client(socket);
+});
 
 server.listen(5000, function() {
     console.log('Server up and listening for connections...');

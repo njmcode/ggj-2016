@@ -1,24 +1,29 @@
 'use strict';
 
-var uuid = require('node-uuid');
+var randomstring = require('randomstring');
 
 var handlers = {
 
-    masterHandler: function(req, res) {
-        var gameKey = uuid.v4();
-        var longURL = 'http://' + req.headers.host + '/join?id=' + gameKey;
+    createGame: function(req, res) {
+        var gameKey = randomstring.generate(5);
+        res.redirect('/' + gameKey);
+    },
+
+    observeGame: function(req, res) {
+        var joinURL = 'http://' + req.headers.host + '/c/' + req.params.game;
         res.render('master', {
-            joinURL: longURL
+            joinURL: joinURL
         });
     },
 
-    clientHandler: function(req, res) {
+    playGame: function(req, res) {
         res.render('client');
     },
 
     bind: function(app) {
-        app.get('/', handlers.masterHandler);
-        app.get('/join', handlers.clientHandler);
+        app.get('/', handlers.createGame);
+        app.get('/:game', handlers.observeGame);
+        app.get('/c/:game', handlers.playGame);
     }
 };
 
