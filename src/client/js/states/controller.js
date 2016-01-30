@@ -4,25 +4,31 @@
 **/
 
 var CONFIG = require('../config');
-var IO = require('../io/io');
-
-var ControllerState = function(){};
 
 var statusText, fireButton, shieldButton;
 
+var socket, gameID;
+
+function _setupSocket() {
+    socket = io.connect();
+    gameID = window._game;
+}
+
 function _fireProjectile() {
 	console.log('FIRE PROJECTILE');
-	IO.socket.emit('gesture', {
+	socket.emit('gesture', {
 		action: 'fire'
 	});
 }
 
 function _doShield() {
 	console.log('SHIELD');
-	IO.socket.emit('gesture', {
+	socket.emit('gesture', {
 		action: 'shield'
 	});
 }
+
+var ControllerState = function(){};
 
 ControllerState.prototype.preload = function() {
 	this.load.image('icon-fire', '../public/assets/icon-fire.png');
@@ -31,6 +37,10 @@ ControllerState.prototype.preload = function() {
 
 ControllerState.prototype.create = function() {
     console.log('CONTROLLER UI');
+
+    _setupSocket();
+
+    console.log('Game is', gameID);
     
     // Add readout text for debugging
     statusText = this.add.text(10, 10, '', CONFIG.font.smallStyle);
@@ -45,13 +55,27 @@ ControllerState.prototype.create = function() {
     shieldButton.anchor.setTo(0.5, 0.5);
 
     // Connect event
-    IO.socket.on('connect', function(data) {
-        IO.socket.emit('join', { game: IO.game });
-        console.log('CONNECTED AS PLAYER');
+    socket.on('connect', function() {
+
+        var data = {
+            game: gameID
+        };
+        if (window.location.hash) {
+            data.id = window.location.hash;
+        }
+        socket.emit('join', data);
+        console.log('Controller received CONNECT', data);
+    });
+
+    
+    socket.on('join', function(data) {
+        console.log('Controller received JOIN', data);
+        window.location.hash = data.id;
     });
 
     // Receive gesture events
-    IO.socket.on('gesture', function(data) {
+    socket.on('gesture', function(data) {
+        console.log('Controller received GESTURE', data);
     	if(statusText && data.action) statusText.setText('Action: ' + data.action);
     });
 };

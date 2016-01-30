@@ -29,13 +29,16 @@ Client.prototype = {
     },
     onJoin: function(data) {
         var self = this;
+        if (data.id) {
+            self.id = data.id;
+        }
         self.game = data.game;
         db.getOrCreate(self.game, function(details) {
-            if (details.left == null) {
+            if (details.left == null || details.left === self.id) {
                 details.left = self.id;
                 self.position = 'left';
                 self.socket.join(self.game);
-            } else if (details.right == null) {
+            } else if (details.right == null || details.right === self.id) {
                 details.right = self.id;
                 self.position = 'right';
                 self.socket.join(self.game);

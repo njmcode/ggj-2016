@@ -1,7 +1,13 @@
 
 
 var CONFIG = require('../config');
-var IO = require('../io/io');
+
+var socket, gameID;
+
+function _setupSocket() {
+    socket = io.connect();
+    gameID = window._game;
+}
 
 var PlayfieldState = function(){
 };
@@ -9,10 +15,12 @@ var PlayfieldState = function(){
 PlayfieldState.prototype.create = function() {
     console.log('PLAY FIELD');
 
+    _setupSocket();
+
     // Connect event
-    IO.socket.on('connect', function(data) {
-    	console.log('CONNECTED AS HOST');
-        IO.socket.emit('host', { game: IO.game });
+    socket.on('connect', function(data) {
+    	console.log('PlayField received CONNECT');
+        socket.emit('host', { game: gameID });
     });
 };
 
