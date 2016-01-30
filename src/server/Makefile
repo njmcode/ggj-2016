@@ -2,4 +2,4 @@ install:
 	npm install
 
 run: install
-	node main.js
+	node_modules/.bin/nodemon main.js

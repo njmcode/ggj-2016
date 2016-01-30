@@ -1,6 +1,7 @@
 'use strict';
 
 var http = require('http');
+var redis = require('socket.io-redis');
 var express = require('express');
 var socketio = require('socket.io');
 var handlebars = require('express-handlebars');
@@ -8,53 +9,22 @@ var handlebars = require('express-handlebars');
 var app = express();
 var server = http.createServer(app);
 var io = socketio(server);
+io.adapter(redis({host: 'database'}));
+
+var handlers = require('./handlers');
+var Client = require('./client');
 
 app.engine('.hbs', handlebars({
     defaultLayout: 'main',
     extname: '.hbs'
 }));
 app.set('view engine', '.hbs');
+app.use('/public', express.static('public'));
 
-
-var globals = {
-    connections: []
-};
-
-
-var httpHandlers = {
-
-    index: function(req, res) {
-        res.render('index');
-    },
-    controller: function(req, res) {
-        res.render('controller');
-    }
-
-};
-
-app.get('/', httpHandlers.index);
-app.get('/controller', httpHandlers.controller);
-
-
+handlers.bind(app);
 io.on('connection', function(socket) {
-
-    var socketHandlers = {
-
-        join: function() {
-            globals.connections.push(socket);
-            socket.emit('connected');
-        },
-        disconnect: function() {
-            globals.connections.splice(globals.connections.indexOf(socket), 1);
-        }
-
-    };
-
-    socket.on('join', socketHandlers.join);
-    socket.on('disconnect', socketHandlers.disconnect);
-
+    new Client(socket);
 });
-
 
 server.listen(5000, function() {
     console.log('Server up and listening for connections...');
