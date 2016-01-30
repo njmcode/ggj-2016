@@ -7,7 +7,7 @@ module.exports = {
         'main': './boot.js'
     },
     output: {
-        path: __dirname,
+        path: '../server/public/',
         filename: '[name].bundle.js'
     },
     plugins: [
