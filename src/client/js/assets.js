@@ -14,7 +14,15 @@ var assets = {
     // Format is [key, path, width, height]
     ui: [
         ['icon-fire', 'public/assets/icon-fire.png', 128, 128],
-        ['icon-shield', 'public/assets/icon-shield.png', 128, 128]
+        ['icon-shield', 'public/assets/icon-shield.png', 128, 128],
+        ['title-logo', '/public/assets/title/logo.png', 480, 81],
+        ['starfield', '/public/assets/title/starfield.png', 800, 400],
+        ['layer1', '/public/assets/title/layer1.png', 800, 400],
+        ['layer2', '/public/assets/title/layer2.png', 800, 400],
+        ['layer3', '/public/assets/title/layer3.png', 800, 400],
+        ['clouds', '/public/assets/title/clouds.png', 800, 400],
+        ['dusk-mask', '/public/assets/title/dusk_mask.png', 800, 400],
+        ['vignette', '/public/assets/title/vignette.png', 800, 400]
     ],
     // Format is [key, path, width, height]
     images: [

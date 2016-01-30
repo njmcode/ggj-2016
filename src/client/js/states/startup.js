@@ -27,9 +27,16 @@ StartupState.prototype.preload = function() {
 
         if(totalLoaded === totalFiles) {
             console.log('All assets loaded');
-            self.game.state.start(CONFIG.stateAfterStartup);
+            if (window.location.hash) {
+                self.game.state.start(window.location.hash.substr(1));
+            } else {
+                self.game.state.start(CONFIG.stateAfterStartup);
+            }
         }
     });
+
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
 };
 
 StartupState.prototype.create = function() {
