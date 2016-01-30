@@ -2,11 +2,16 @@ var socket = io.connect();
 var game = window._game;
 var id = Math.random();
 
-socket.on('connect', function(){
+socket.on('connect', function() {
+	console.log('CONNECTED');
     socket.emit('join', {game: game});
 });
 
 socket.on('gesture', function(data) {
+    console.log(data);
+});
+
+socket.on('join', function(data) {
     console.log(data);
 });
 
