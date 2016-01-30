@@ -27,7 +27,7 @@ StartupState.prototype.preload = function() {
 
         if(totalLoaded === totalFiles) {
             console.log('All assets loaded');
-            game.state.start('title');
+            self.game.state.start(CONFIG.stateAfterStartup);
         }
     });
 };

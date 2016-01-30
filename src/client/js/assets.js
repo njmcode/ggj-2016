@@ -13,11 +13,12 @@ var assets = {
     // ui, scenes and images are standard image files.
     // Format is [key, path, width, height]
     ui: [
-
+        ['icon-fire', 'public/assets/icon-fire.png', 128, 128],
+        ['icon-shield', 'public/assets/icon-shield.png', 128, 128]
     ],
     // Format is [key, path, width, height]
     images: [
-
+        ['s-wizard', 'public/assets/wizard.png', 128, 128]
     ],
     // Audio files to load
     sounds: [
