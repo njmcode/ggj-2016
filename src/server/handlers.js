@@ -17,7 +17,7 @@ var handlers = {
     },
 
     playGame: function(req, res) {
-        res.render('client');
+        res.render('client', {game: req.params.game});
     },
 
     bind: function(app) {
