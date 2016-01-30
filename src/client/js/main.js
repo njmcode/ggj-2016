@@ -5,7 +5,9 @@
 var CONFIG = require('./config');
 
 var States = {
-    'Startup': require('./states/startup')
+    'Startup': require('./states/startup'),
+    'Title': require('./states/title'),
+    'PlayField': require('./states/playfield')
 };
 
 /**

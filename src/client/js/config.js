@@ -10,6 +10,8 @@ var CONFIG = {
         enabled: false,
     },
 
+    stateAfterStartup: 'Playfield',
+
     // Pixel size of the Phaser canvas.
     // (Canvas itself is scaled to viewport)
     gameSize: {
