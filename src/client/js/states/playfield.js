@@ -22,6 +22,10 @@ PlayfieldState.prototype.create = function() {
     	console.log('PlayField received CONNECT');
         socket.emit('host', { game: gameID });
     });
+
+    socket.on('gesture', function(data) {
+    	console.log('PlayField received GESTURE', data);
+    });
 };
 
 PlayfieldState.prototype.update = function() {

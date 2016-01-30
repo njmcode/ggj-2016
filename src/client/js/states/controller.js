@@ -7,7 +7,7 @@ var CONFIG = require('../config');
 
 var statusText, fireButton, shieldButton;
 
-var socket, gameID;
+var socket, gameID, playerData = {};
 
 function _setupSocket() {
     socket = io.connect();
@@ -17,14 +17,16 @@ function _setupSocket() {
 function _fireProjectile() {
 	console.log('FIRE PROJECTILE');
 	socket.emit('gesture', {
-		action: 'fire'
+		action: 'fire',
+        position: playerData.position
 	});
 }
 
 function _doShield() {
 	console.log('SHIELD');
 	socket.emit('gesture', {
-		action: 'shield'
+		action: 'shield',
+        position: playerData.position
 	});
 }
 
@@ -71,6 +73,9 @@ ControllerState.prototype.create = function() {
     socket.on('join', function(data) {
         console.log('Controller received JOIN', data);
         window.location.hash = data.id;
+        for (var k in data) {
+            playerData[k] = data[k];
+        }
     });
 
     // Receive gesture events
