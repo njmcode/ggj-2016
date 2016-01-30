@@ -1,9 +1,11 @@
 'use strict';
 
 var db = require('./database');
+var uuid = require('uuid');
 
 
 var Client = function(socket) {
+    this.id = uuid.v4();
     this.game = null;
     this.position = null;
     this.socket = socket;
@@ -19,9 +21,10 @@ Client.prototype = {
         this.socket.on('status', this.onStatus.bind(this));
     },
     onHost: function(data) {
+        var self;
         this.game = data.game;
         db.getOrCreate(this.game, function() {
-            this.socket.join(this.game);
+            self.socket.join(self.game);
         });
     },
     onJoin: function(data) {
@@ -29,18 +32,21 @@ Client.prototype = {
         self.game = data.game;
         db.getOrCreate(self.game, function(details) {
             if (details.left == null) {
-                details.left = self;
+                details.left = self.id;
                 self.position = 'left';
                 self.socket.join(self.game);
             } else if (details.right == null) {
-                details.right = self;
+                details.right = self.id;
                 self.position = 'right';
                 self.socket.join(self.game);
             } else {
-                console.error('TWO PLAYERS ALREADY CONNECTED');
+                return self.socket.emit('fail', {
+                    'reason': 'Room full'
+                });
             }
-            db.conn.set(self.game, details);
+            db.conn.set(self.game, JSON.stringify(details));
             self.socket.emit('join', {
+                id: self.id,
                 position: self.position,
                 health: 100,
                 mana: 100
@@ -50,9 +56,9 @@ Client.prototype = {
     onDisconnect: function() {
         var self = this;
         db.getOrCreate(self.game, function(details) {
-            if (details.left === self) {
+            if (details.left === self.id) {
                 details.left = null;
-            } else if (details.right === self) {
+            } else if (details.right === self.id) {
                 details.right = null;
             }
         });
