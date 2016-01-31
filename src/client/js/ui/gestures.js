@@ -6,18 +6,33 @@ var detector, hamDetector;
 var callbacks = {};
 var state;
 
-function addPointFromTouch(t) {
-    points.push(new Point(t.clientX, t.clientY));
+var targetEl;
+
+function addPointFromTouch(state, t) {
+	/*var x = t.clientX - targetEl.offsetLeft, 
+		y = t.clientY - targetEl.offsetTop;*/
+	var x = state.game.input.x,
+		y = state.game.input.y;
+
+    points.push(new Point(x, y));
+    callbacks.onDraw.call(state, x, y);
 }
 
-function addPointFromMouse(e) {
-    points.push(new Point(e.clientX, e.clientY));
+function addPointFromMouse(state, t) {
+    /*var x = t.clientX - targetEl.offsetLeft, 
+		y = t.clientY - targetEl.offsetTop;*/
+	var x = state.game.input.x,
+		y = state.game.input.y;
+
+    points.push(new Point(x, y));
+    callbacks.onDraw.call(state, x, y);
 }
 
 function _init(state, appEl, cbs) {
 
 	state = state;
 	callbacks = cbs;
+	targetEl = appEl;
 
 	detector = new DollarRecognizer();
 
@@ -30,15 +45,15 @@ function _init(state, appEl, cbs) {
 	/** Touch events **/
 	appEl.addEventListener('touchstart', function(e) {
 	    points = [];
-	    addPointFromTouch(e.changedTouches[0]);
+	    addPointFromTouch(state, e.changedTouches[0]);
 	}, false)
 
 	appEl.addEventListener('touchmove', function(e) {
-	    addPointFromTouch(e.changedTouches[0]);
+	    addPointFromTouch(state, e.changedTouches[0]);
 	}, false);
 
 	appEl.addEventListener('touchend', function(e) {
-	    addPointFromTouch(e.changedTouches[0]);
+	    addPointFromTouch(state, e.changedTouches[0]);
 	    _detectShape(state);
 	});
 
@@ -47,17 +62,17 @@ function _init(state, appEl, cbs) {
 	appEl.addEventListener('mousedown', function(e) {
 	    _isDrawing = true;
 	    points = [];
-	    addPointFromMouse(e);
+	    addPointFromMouse(state, e);
 	});
 
 	appEl.addEventListener('mousemove', function(e) {
 	    if(!_isDrawing) return false;
-	    addPointFromMouse(e); // TODO: throttle
+	    addPointFromMouse(state, e); // TODO: throttle
 	});
 
 	appEl.addEventListener('mouseup', function(e) {
 	    _isDrawing = false;
-	    addPointFromMouse(e);
+	    addPointFromMouse(state, e);
 	    _detectShape(state);
 	});
 

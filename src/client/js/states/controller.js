@@ -169,6 +169,8 @@ function _cancelCurrentSpell(state) {
  * and gesture used.
 **/
 
+var gestureEmitter;
+
 // Fired when our gesture engine detects a gesture.
 // We analyse what type and set up game logic accordingly.
 function _onGestureDetect(gestureName) {
@@ -194,10 +196,42 @@ function _onGestureDetect(gestureName) {
     }
 }
 
+function throttle(fn, threshhold, scope) {
+  threshhold || (threshhold = 250);
+  var last,
+      deferTimer;
+  return function () {
+    var context = scope || this;
+
+    var now = +new Date,
+        args = arguments;
+    if (last && now < last + threshhold) {
+      // hold on to it
+      clearTimeout(deferTimer);
+      deferTimer = setTimeout(function () {
+        last = now;
+        fn.apply(context, args);
+      }, threshhold);
+    } else {
+      last = now;
+      fn.apply(context, args);
+    }
+  };
+}
+
+function _onGestureDraw(x, y) {
+
+    //console.log('gesture', x, y);
+    gestureEmitter.x = x;
+    gestureEmitter.y = y;
+    gestureEmitter.explode(200, 2);  
+    
+}
+
 // Fired when a gesture is too short/not done right.
 function _onGestureFail() {
     console.log('gesture failed');
-    currentSpell = null;
+    //currentSpell = null;
 }
 
 function _onSwipe(dir) {
@@ -236,7 +270,6 @@ function _initBackdrop() {
     var pTex = this.add.renderTexture(pGfx.width, pGfx.height);
     pTex.renderXY(pGfx, 0, 0, true);
 
-    // Create and trigger the emitter
     var emitter = this.add.emitter(this.game.world.centerX, this.game.world.centerY, 500);
     emitter.width = this.game.width;
     emitter.height = this.game.height;
@@ -250,6 +283,28 @@ function _initBackdrop() {
     emitter.makeParticles(pTex);
     emitter.gravity = 0;
     emitter.start(false, 500, 1, 0);
+
+    // add draw emitter
+    var geGfx = this.add.graphics(-20, -20);
+    geGfx.beginFill(0xffcc00);
+    geGfx.drawRect(0, 0, 10, 10);
+    var geTex = this.add.renderTexture(geGfx.width, geGfx.height);
+    geTex.renderXY(geGfx, 0, 0, true);
+
+    gestureEmitter = this.add.emitter(this.game.world.centerX, this.game.world.centerY, 200);
+    gestureEmitter.width = 50;
+    gestureEmitter.height = 50;
+    gestureEmitter.minParticleScale = 0.5;
+    gestureEmitter.maxParticleScale = 1;
+    gestureEmitter.setYSpeed(-50, 50);
+    gestureEmitter.setXSpeed(-50, 50);
+    gestureEmitter.alpha = 1;
+    gestureEmitter.minRotation = -10;
+    gestureEmitter.maxRotation = 10;
+    gestureEmitter.makeParticles(geTex);
+    gestureEmitter.gravity = 0;
+    //gestureEmitter.start(false, 500, 1, 0);
+
 
 
     // add frame
@@ -289,6 +344,7 @@ ControllerState.prototype.create = function() {
     _setupSocket();
     gestureEngine.init(this, this.game.canvas, {
         onGesture: _onGestureDetect,
+        onDraw: _onGestureDraw,
         onBadGesture: _onGestureFail,
         onSwipe: _onSwipe
     });
