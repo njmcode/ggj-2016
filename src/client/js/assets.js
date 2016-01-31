@@ -36,6 +36,9 @@ var assets = {
         ['title-theme', ['/public/assets/audio/title-theme.mp3',
                          '/public/assets/audio/title-theme.opus']
         ],
+        ['bgm', ['/public/assets/audio/bgm.mp3',
+                 '/public/assets/audio/bgm.opus']
+        ],
         ['collide1', ['/public/assets/audio/collide1.mp3',
                       '/public/assets/audio/collide1.opus']
         ],
