@@ -113,7 +113,7 @@ function _visuallyCastCurrentSpell(state, dir) {
     var vy = (dir === 'up') ? -SPELL_TRAVEL_DIST : SPELL_TRAVEL_DIST;
     var tw = state.game.add.tween(currentSpellIcon.position).to({
             y: state.game.world.centerY + vy,
-        }, SPELL_TRAVEL_TIME, Phaser.Easing.Exponential.In).start();
+        }, SPELL_TRAVEL_TIME).start();
     var tw2 = state.game.add.tween(currentSpellIcon).to({
         alpha: 0
     }, SPELL_TRAVEL_TIME, Phaser.Easing.Exponential.In).start();
