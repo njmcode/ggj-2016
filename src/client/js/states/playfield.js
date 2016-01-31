@@ -17,12 +17,19 @@ PlayfieldState.prototype.preload = function() {
 PlayfieldState.prototype.create = function() {
     console.log('PLAY FIELD');
     this.socket = _common.socket;
-    console.log(this.socket);
+    
     var state = this;
 
     this.createBackground();
     this.createWizards();
     this.createTowers();
+
+    // Audio
+    state.audio_prep = this.add.audio('shield2');
+    state.audio_shot = this.add.audio('shot3');
+    state.audio_shield = this.add.audio('shield1');
+    state.audio_scollide = this.add.audio('shield-collide4');
+    state.audio_collide = this.add.audio('collide2');
 
     state.game.physics.startSystem(Phaser.Physics.ARCADE);
     
@@ -45,10 +52,14 @@ PlayfieldState.prototype.create = function() {
     state.wizards.left.sprite.anchor.setTo(1, 0.5);
     state.wizards.left.sprite.health = CONFIG.settings.health.base;
     state.wizards.left.sprite.name = 'left';
+
     state.wizards.right.sprite = state.game.add.sprite(state.wizards.right.position[0], state.wizards.right.position[1], 's-wizard');
     state.wizards.right.sprite.anchor.setTo(0, 0.5);
     state.wizards.right.sprite.health = CONFIG.settings.health.base;
-    state.wizards.left.sprite.name = 'right';
+    state.wizards.right.sprite.name = 'right';
+
+    state.wizards.left.sprite.mana = CONFIG.settings.mana.base;
+    state.wizards.right.sprite.mana = CONFIG.settings.mana.base;
 
     state.game.physics.enable([state.wizards.left.sprite, state.wizards.right.sprite]);
     
@@ -61,20 +72,60 @@ PlayfieldState.prototype.create = function() {
     // Add meters for health and mana
     var hStyle = Object.create(CONFIG.font.baseStyle);
     hStyle.fill = '#e90f50';
+
+    var mStyle = Object.create(CONFIG.font.baseStyle);
+    mStyle.fill = '#456670';
+
     state.meters = {};
     ['left','right'].forEach(function(dir) {
+        state.meters[dir] = {};
+        
         var x = (dir === 'left') ? 10 : state.game.width - 10,
             y = 10;
         var tx = state.add.text(x, y, CONFIG.settings.health.base, hStyle);
         if(dir === 'right') tx.anchor.setTo(1, 0);
-        state.meters[dir] = tx;
+        state.meters[dir].health = tx;
+
+        var y = 30;
+        var tx = state.add.text(x, y, CONFIG.settings.mana.base, mStyle);
+        if(dir === 'right') tx.anchor.setTo(1, 0);
+        state.meters[dir].mana = tx;
     });
-    console.log('METERS', state.meters);
+    
+    
+    // Players automatically regenerate mana over time
+    var regenMana = function () {
+        if ( state.wizards.left.sprite.mana < CONFIG.settings.mana.max ) {
+            state.wizards.left.sprite.mana++;
+            state.meters.left.mana.setText(state.wizards.left.sprite.mana);
+        }
+        if ( state.wizards.right.sprite.mana < CONFIG.settings.mana.max ) {
+            state.wizards.right.sprite.mana++;
+            state.meters.right.mana.setText(state.wizards.right.sprite.mana);
+        }
+    };
+    var regenTimer = state.game.time.events.add(Phaser.Timer.SECOND, regenMana, state);
+    regenTimer.loop = true;
+    
+    // Casting a spell costs mana
+    var calcManaCost = function (spellType, modifier, power) {
+        var costSheet = CONFIG.settings.manaCost;
+        var cost = 0;
+        
+        cost += costSheet[spellType];
+        if ( modifier ) {
+            cost += costSheet[modifier];
+        }
+        if ( power == 'high' ) {
+            cost *= costSheet.powerMultiplier;
+        }
+        
+        return cost;
+    }
     
     // Player is preparing a spell
     var prepSpell = function(onSide, data) {
         var pos, xOffset, sprite;
-        console.log('prepare', arguments);
         
         // Who is preparing the spell?
         pos = state.wizards[onSide].position;
@@ -92,17 +143,33 @@ PlayfieldState.prototype.create = function() {
         sprite.scale.setTo( (onSide == 'left') ? -0.25 : 0.25, 0.25);
         
         state.wizards[onSide].preppedSpell = sprite;
+
+        // Play prep sound
+        state.audio_prep.play();
     };
     
     // Function to handle projectile firing
     var fireProjectile = function (fromSide, data) {
-        var sprite, dest;
+        var sprite, dest, cost;
         
+        // Player is attempting to cast a spell (without preparing one first)
         if ( !state.wizards[fromSide].preppedSpell ) {
             console.log('fizzle');
             return;
         }
-        console.log('fire!', arguments);
+        
+        // Player must have enough mana to cast the spell
+        cost = calcManaCost('shot', false, data.power);
+        if ( state.wizards[fromSide].sprite.mana < cost ) {
+            console.log('fizzle - no mana!');
+            state.wizards[fromSide].preppedSpell.kill();
+            state.wizards[fromSide].preppedSpell = false;
+            return;
+        }
+        else {
+            state.wizards[fromSide].sprite.mana -= cost;
+            state.meters[fromSide].mana.setText(state.wizards[fromSide].sprite.mana);
+        }
         
         // Where are we firing at?
         dest = state.wizards[(fromSide == 'left') ? 'right' : 'left'].position;
@@ -115,8 +182,8 @@ PlayfieldState.prototype.create = function() {
         state.game.physics.enable(sprite);
         sprite.checkWorldBounds = true;
         sprite.outOfBoundsKill = true;
-        sprite.damageDealt = 1;     // Changes based on gesture modifiers
-        state.game.physics.arcade.moveToXY(sprite, dest[0], dest[1], 100);
+        sprite.damageDealt = CONFIG.settings.spells.shotDamage;     // Changes based on gesture modifiers
+        state.game.physics.arcade.moveToXY(sprite, dest[0], dest[1], (data.power == 'low') ? 120 : 240);
         
         // Create an emitter for particle effects
         // add draw emitter
@@ -140,15 +207,34 @@ PlayfieldState.prototype.create = function() {
         projectileEmitter.gravity = 0;
         projectileEmitter.start(false, 500, 1, 0);
         sprite.addChild(projectileEmitter);
+
+        // Play shot sound
+        state.audio_shot.play();
     };
     
     // Function to handle generating a shield
     var raiseShield = function (atSide, data) {
+        var cost;
+        
+        // Player is attempting to cast a spell (without preparing one first)
         if ( !state.wizards[atSide].preppedSpell ) {
             console.log('fizzle');
             return;
         }
-        console.log('duck and cover!', arguments);
+        
+        // Player must have enough mana to cast the spell
+        cost = calcManaCost('shield', false, data.power);
+        if ( state.wizards[atSide].sprite.mana < cost ) {
+            console.log('fizzle - no mana!');
+            state.wizards[atSide].preppedSpell.kill();
+            state.wizards[atSide].preppedSpell = false;
+            return;
+        }
+        else {
+            state.wizards[atSide].sprite.mana -= cost;
+            state.meters[atSide].mana.setText(state.wizards[atSide].sprite.mana);
+        }
+        console.log('duck and cover!', 'cost: ' + cost, 'mana remaining: ' + state.wizards[atSide].sprite.mana);
         
         // Kill any existing shield
         if ( state.wizards[atSide].shield ) {
@@ -163,8 +249,11 @@ PlayfieldState.prototype.create = function() {
         state.game.physics.enable(state.wizards[atSide].shield);
         state.wizards[atSide].shield.scale.setTo( (atSide == 'left') ? -0.5 : 0.5, 1);
         state.wizards[atSide].shield.health = 1;      // Changes based on gesture modifiers
-        state.wizards[atSide].shield.lifespan = Phaser.Timer.SECOND * 4;      // Shields automatically fade after a given amount of time
+        state.wizards[atSide].shield.lifespan = Phaser.Timer.SECOND * CONFIG.settings.spells.shieldLength;      // Shields automatically fade after a given amount of time
         state.wizards[atSide].shield.name = atSide;
+
+        // Play shield sound
+        state.audio_shield.play();
     };
     
     // Connect event
@@ -244,13 +333,20 @@ PlayfieldState.prototype.update = function() {
             state.wizards[shield.name].shield = false;
         }
         projectile.kill();
+
+        // Play shield collision sound
+        state.audio_scollide.play();
     };
     // Handler for a projectile hitting a player
     var playerHit = function (player, projectile) {
-        console.log('player hit', projectile.key, player.key);
         player.damage(projectile.damageDealt);
-        state.meters[player.name].setText(player.health);
+        state.meters[player.name].health.setText(player.health);
+        console.log('player hit, health remaining: ' + player.health);
+
         projectile.kill();
+
+        // Play collision sound
+        state.audio_collide.play();
     }
     
     if ( state.wizards.right.shield ) {
@@ -275,8 +371,18 @@ PlayfieldState.prototype.update = function() {
 };
 
 PlayfieldState.prototype.render = function() {
-    this.leftWizard.render();
-    this.rightWizard.render();
+    if ( this.wizards.left.sprite.exists ) {
+        this.leftWizard.render();
+    }
+    else {
+        this.leftWizard.clear();
+    }
+    if ( this.wizards.right.sprite.exists ) {
+        this.rightWizard.render();
+    }
+    else {
+        this.rightWizard.clear();
+    }
     this.leftTower.render();
     this.rightTower.render();
 };
