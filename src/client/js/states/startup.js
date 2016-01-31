@@ -31,15 +31,19 @@ StartupState.prototype.preload = function() {
     });
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
 };
 
 StartupState.prototype.create = function() {
-    if (window.location.hash) {
-        this.game.state.start(window.location.hash.substr(1));
-    } else {
-        this.game.state.start(CONFIG.stateAfterStartup);
-    }
+    var self = this;
+    _common.socket = io.connect();
+    _common.socket.on('connect', function() {
+        console.log('connect', window.game);
+        if (window.location.hash) {
+            self.game.state.start(window.location.hash.substr(1));
+        } else {
+            self.game.state.start(CONFIG.stateAfterStartup);
+        }
+    });
 };
 
 

@@ -55,6 +55,14 @@ TitleState.prototype.create = function() {
 
     var style = { font: "18px VT323", fill: "#aaaaaa", wordWrap: true, wordWrapWidth: 180, align: "center" };
     this.info = this.add.text(430, 210, STRINGS.titleJoinPrompt + window.joinURL, style);
+
+
+    this.socket = _common.socket;
+    console.log(this.socket);
+    this.socket.on('room', this.handleRoomStatus.bind(this));
+    this.socket.emit('host', {
+        game: window.game
+    });
 };
 
 
@@ -71,6 +79,12 @@ TitleState.prototype.update = function() {
     this.ghostTitle.position.x = 400 + this.game.rnd.integerInRange(-5, 5);
     this.ghostTitle.position.y = 120 + this.game.rnd.integerInRange(-5, 5);
 };
+
+TitleState.prototype.handleRoomStatus = function(data) {
+    if (data.left != null && data.right != null) {
+        this.state.start('PlayField');
+    }
+}
 
 
 module.exports = TitleState;

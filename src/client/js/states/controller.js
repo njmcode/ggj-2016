@@ -31,7 +31,7 @@ function _setupSocket() {
             game: gameID
         };
         if (window.location.hash) {
-            data.id = window.location.hash;
+            data.id = window.location.hash.substr(1);
         }
         socket.emit('join', data);
         console.log('Controller received CONNECT', data);

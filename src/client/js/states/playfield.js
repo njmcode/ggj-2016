@@ -4,12 +4,8 @@ var CONFIG = require('../config');
 var _common = require('./_common');
 var Wizard = require('../actors/wizard');
 var Tower = require('../actors/tower');
-var socket, gameID;
+var gameID = window._game;
 
-function _setupSocket() {
-    socket = io.connect();
-    gameID = window._game;
-}
 
 var PlayfieldState = function(){
 };
@@ -20,6 +16,8 @@ PlayfieldState.prototype.preload = function() {
 
 PlayfieldState.prototype.create = function() {
     console.log('PLAY FIELD');
+    this.socket = _common.socket;
+    console.log(this.socket);
     var state = this;
     state.wizardMaxHealth = 10;
 
@@ -55,9 +53,6 @@ PlayfieldState.prototype.create = function() {
     state.wizards.left.projectiles.physicsBodyType = Phaser.Physics.Arcade;
     state.wizards.right.projectiles.enableBody = true;
     state.wizards.right.projectiles.physicsBodyType = Phaser.Physics.Arcade;
-    
-    // Setup the socket for listening
-    _setupSocket();
     
     // Function to handle projectile firing
     var fireProjectile = function (fromSide, data) {
@@ -104,12 +99,12 @@ PlayfieldState.prototype.create = function() {
     };
     
     // Connect event
-    socket.on('connect', function(data) {
+    state.socket.on('connect', function(data) {
     	console.log('PlayField received CONNECT');
-        socket.emit('host', { game: gameID });
+        state.socket.emit('host', { game: gameID });
     });
 
-    socket.on('gesture', function(data) {
+    state.socket.on('gesture', function(data) {
         console.log('PlayField received GESTURE', data);
         
         switch ( data.action ) {
