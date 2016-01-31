@@ -142,7 +142,7 @@ function _doCurrentSpell(state, dir) {
     console.log('DO', currentSpell);
 
     socket.emit('gesture', {
-        'player': 'playerData.position',
+        'player': playerData.position,
         'rune': currentRune,
         'intent': currentSpell,
         'power': 'high',

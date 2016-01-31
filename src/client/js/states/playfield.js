@@ -34,11 +34,13 @@ PlayfieldState.prototype.create = function() {
         left: {
             projectiles: state.game.add.group(),
             shield: false,
+            preppedSpell: false,
             position: [100, 130]
         },
         right: {
             projectiles: state.game.add.group(),
             shield: false,
+            preppedSpell: false,
             position: [680, 130]
         }
     };
@@ -59,29 +61,83 @@ PlayfieldState.prototype.create = function() {
     // Setup the socket for listening
     _setupSocket();
     
+    var prepSpell = function(onSide, data) {
+        var pos, xOffset, sprite;
+        console.log('prepare', arguments);
+        
+        // Who is preparing the spell?
+        pos = state.wizards[onSide].position;
+        xOffset = (onSide == 'left') ? 10 : -10;
+        
+        // Kill any existing spell
+        if ( state.wizards[onSide].preppedSpell ) {
+            state.wizards[onSide].preppedSpell.kill();
+            state.wizards[onSide].preppedSpell = false;
+        }
+        
+        // Create the sprite, and hold it
+        sprite = state.game.add.sprite(pos[0], pos[1] + xOffset, data.intent);
+        sprite.anchor.setTo(0.5, 0.5);
+        sprite.scale.setTo( (onSide == 'left') ? -0.25 : 0.25, 0.25);
+        
+        state.wizards[onSide].preppedSpell = sprite;
+    };
+    
     // Function to handle projectile firing
     var fireProjectile = function (fromSide, data) {
-        var sprite, pos, dest;
+        var sprite, dest;
         
-        // Where are we firing from, and at where?
-        pos = state.wizards[fromSide].position;
+        if ( !state.wizards[fromSide].preppedSpell ) {
+            console.log('fizzle');
+            return;
+        }
+        console.log('fire!', arguments);
+        
+        // Where are we firing at?
         dest = state.wizards[(fromSide == 'left') ? 'right' : 'left'].position;
         
         // Create the projectile, and set the physics options
-        sprite = state.game.add.sprite(pos[0], pos[1], 'shot');
+        sprite = state.wizards[fromSide].preppedSpell;
+        state.wizards[fromSide].preppedSpell = false;
+        
         state.wizards[fromSide].projectiles.add(sprite);
         state.game.physics.enable(sprite);
-        sprite.anchor.setTo(0.5, 0.5);
-        sprite.scale.setTo( (fromSide == 'left') ? -0.25 : 0.25, 0.25);
         sprite.checkWorldBounds = true;
         sprite.outOfBoundsKill = true;
         sprite.damageDealt = 1;     // Changes based on gesture modifiers
         state.game.physics.arcade.moveToXY(sprite, dest[0], dest[1], 100);
+        
+        // Create an emitter for particle effects
+        // add draw emitter
+        var geGfx = state.add.graphics(-20, -20);
+        geGfx.beginFill(0xffcc00);
+        geGfx.drawRect(0, 0, 10, 10);
+        var geTex = state.add.renderTexture(geGfx.width, geGfx.height);
+        geTex.renderXY(geGfx, 0, 0, true);
+
+        var projectileEmitter = state.add.emitter(0, 0, 200);
+        projectileEmitter.width = 50;
+        projectileEmitter.height = 50;
+        projectileEmitter.minParticleScale = 0.5;
+        projectileEmitter.maxParticleScale = 1;
+        projectileEmitter.setYSpeed(-20, 50);
+        projectileEmitter.setXSpeed(400, 0);
+        projectileEmitter.alpha = 1;
+        projectileEmitter.minRotation = -10;
+        projectileEmitter.maxRotation = 10;
+        projectileEmitter.makeParticles(geTex);
+        projectileEmitter.gravity = 0;
+        projectileEmitter.start(false, 500, 1, 0);
+        sprite.addChild(projectileEmitter);
     };
     
     // Function to handle generating a shield
     var raiseShield = function (atSide, data) {
-        var pos, xOffset;
+        if ( !state.wizards[atSide].preppedSpell ) {
+            console.log('fizzle');
+            return;
+        }
+        console.log('duck and cover!', arguments);
         
         // Kill any existing shield
         if ( state.wizards[atSide].shield ) {
@@ -89,14 +145,11 @@ PlayfieldState.prototype.create = function() {
             state.wizards[atSide].shield = false;
         }
         
-        // Which side is creating the shield?
-        pos = state.wizards[atSide].position;
-        xOffset = (atSide == 'left') ? 10 : -10;
+        // Expand the shield, and set the physics options
+        state.wizards[atSide].shield = state.wizards[atSide].preppedSpell;
+        state.wizards[atSide].preppedSpell = false;
         
-        // Create the shield, and set the physics options
-        state.wizards[atSide].shield = state.game.add.sprite(pos[0] + xOffset, pos[1], 'shield');
         state.game.physics.enable(state.wizards[atSide].shield);
-        state.wizards[atSide].shield.anchor.setTo(0.5, 0.5);
         state.wizards[atSide].shield.scale.setTo( (atSide == 'left') ? -0.5 : 0.5, 1);
         state.wizards[atSide].shield.health = 1;      // Changes based on gesture modifiers
         state.wizards[atSide].shield.lifespan = Phaser.Timer.SECOND * 4;      // Shields automatically fade after a given amount of time
@@ -112,12 +165,22 @@ PlayfieldState.prototype.create = function() {
     socket.on('gesture', function(data) {
         console.log('PlayField received GESTURE', data);
         
-        switch ( data.action ) {
-            case 'fire':
-                fireProjectile(data.position, data);
+        switch ( data.state ) {
+            // Prepare a spell
+            case 'prep':
+                prepSpell(data.player, data);
                 break;
-            case 'shield':
-                raiseShield(data.position, data);
+                
+            // Cast a spell
+            case 'action':
+                switch ( data.intent ) {
+                    case 'shot':
+                        fireProjectile(data.player, data);
+                        break;
+                    case 'shield':
+                        raiseShield(data.player, data);
+                        break;
+                }
                 break;
         }
     });
