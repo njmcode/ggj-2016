@@ -28,24 +28,21 @@ PlayfieldState.prototype.create = function() {
         left: {
             projectiles: state.game.add.group(),
             shield: false,
-            position: [200, 200]
+            position: [100, 130]
         },
         right: {
             projectiles: state.game.add.group(),
             shield: false,
-            position: [600, 200]
+            position: [680, 130]
         }
     };
     state.wizards.left.sprite = state.game.add.sprite(state.wizards.left.position[0], state.wizards.left.position[1], 's-wizard');
-    state.wizards.left.sprite.anchor.setTo(0.5, 0.5);
-    state.wizards.left.sprite.scale.setTo(0.5, 0.5);
+    state.wizards.left.sprite.anchor.setTo(1, 0.5);
     state.wizards.left.sprite.health = 10;
     state.wizards.right.sprite = state.game.add.sprite(state.wizards.right.position[0], state.wizards.right.position[1], 's-wizard');
-    state.wizards.right.sprite.anchor.setTo(0.5, 0.5);
-    state.wizards.right.sprite.scale.setTo(0.5, 0.5);
+    state.wizards.right.sprite.anchor.setTo(0, 0.5);
     state.wizards.right.sprite.health = 10;
-    state.game.physics.enable(state.wizards.left.sprite);
-    state.game.physics.enable(state.wizards.right.sprite);
+    state.game.physics.enable([state.wizards.left.sprite, state.wizards.right.sprite]);
     
     // Create groups for projectiles and shields
     state.wizards.left.projectiles.enableBody = true;
@@ -78,7 +75,7 @@ PlayfieldState.prototype.create = function() {
     
     // Function to handle generating a shield
     var raiseShield = function (atSide, data) {
-        var sprite, pos;
+        var pos;
         
         // Kill any existing shield
         if ( state.wizards[atSide].shield ) {
@@ -106,7 +103,6 @@ PlayfieldState.prototype.create = function() {
     });
 
     socket.on('gesture', function(data) {
-        var sprite, pos, dest;
         console.log('PlayField received GESTURE', data);
         
         switch ( data.action ) {
@@ -159,11 +155,7 @@ PlayfieldState.prototype.update = function() {
     var shieldHit = function (shield, projectile) {
         console.log('shield hit', projectile.key, shield.key);
         shield.damage(projectile.damageDealt);
-        if ( shield.exists ) {
-            console.log('shield still exists');
-        }
-        else {
-            console.log('shield dead');
+        if ( !shield.exists ) {
             state.wizards[shield.name].shield = false;
         }
         projectile.kill();
@@ -178,11 +170,20 @@ PlayfieldState.prototype.update = function() {
     if ( state.wizards.right.shield ) {
         state.game.physics.arcade.overlap(state.wizards.left.projectiles, state.wizards.right.shield, shieldHit );
     }
-    state.game.physics.arcade.overlap(state.wizards.left.projectiles, state.wizards.right.sprite, playerHit);
+    state.game.physics.arcade.overlap(state.wizards.right.sprite, state.wizards.left.projectiles, playerHit);
     if ( state.wizards.left.shield ) {
         state.game.physics.arcade.overlap(state.wizards.right.projectiles, state.wizards.left.shield, shieldHit );
     }
-    state.game.physics.arcade.overlap(state.wizards.right.projectiles, state.wizards.left.sprite, playerHit);
+    state.game.physics.arcade.overlap(state.wizards.left.sprite, state.wizards.right.projectiles, playerHit);
+
+    this.layers.forEach(function(layer) {
+        if (layer.body.position.x < -800) {
+            layer.body.velocity.x = (Math.random()) * 10;
+        }
+        if (layer.body.position.x >0) {
+            layer.body.velocity.x = (Math.random()) * (-10);
+        }
+    });
 };
 
 PlayfieldState.prototype.render = function() {
