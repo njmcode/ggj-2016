@@ -67,6 +67,10 @@ var CONFIG = {
             water: 2,
             powerMultiplier: 2  // How much cost is multiplied by for a power manoevure
         },
+        spells: {
+            shotDamage: 10,
+            shieldLength: 2     // Time in seconds
+        },
         timeLimit: 99
     }
 
