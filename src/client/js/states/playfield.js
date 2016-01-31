@@ -50,10 +50,12 @@ PlayfieldState.prototype.create = function() {
         }
     };
     state.wizards.left.sprite = state.game.add.sprite(state.wizards.left.position[0], state.wizards.left.position[1], 's-wizard');
+    state.wizards.left.sprite.name = 'left';
     state.wizards.left.sprite.anchor.setTo(1, 0.5);
     state.wizards.left.sprite.health = CONFIG.settings.health.base;
     state.wizards.left.sprite.mana = CONFIG.settings.mana.base;
     state.wizards.right.sprite = state.game.add.sprite(state.wizards.right.position[0], state.wizards.right.position[1], 's-wizard');
+    state.wizards.right.sprite.name = 'right';
     state.wizards.right.sprite.anchor.setTo(0, 0.5);
     state.wizards.right.sprite.health = CONFIG.settings.health.base;
     state.wizards.right.sprite.mana = CONFIG.settings.mana.base;
@@ -101,6 +103,12 @@ PlayfieldState.prototype.create = function() {
         pos = state.wizards[onSide].position;
         xOffset = (onSide == 'left') ? 10 : -10;
         
+        // Check for life
+        if ( !state.wizards[onSide].sprite.exists ) {
+            console.log('Dead wizards cast no spells');
+            return;
+        }
+        
         // Kill any existing spell
         if ( state.wizards[onSide].preppedSpell ) {
             state.wizards[onSide].preppedSpell.kill();
@@ -120,7 +128,7 @@ PlayfieldState.prototype.create = function() {
     
     // Function to handle projectile firing
     var fireProjectile = function (fromSide, data) {
-        var sprite, dest, cost;
+        var sprite, dest, cost, shotSpeed;
         
         // Player is attempting to cast a spell (without preparing one first)
         if ( !state.wizards[fromSide].preppedSpell ) {
@@ -152,7 +160,8 @@ PlayfieldState.prototype.create = function() {
         sprite.checkWorldBounds = true;
         sprite.outOfBoundsKill = true;
         sprite.damageDealt = CONFIG.settings.spells.shotDamage;     // Changes based on gesture modifiers
-        state.game.physics.arcade.moveToXY(sprite, dest[0], dest[1], (data.power == 'low') ? 120 : 240);
+        shotSpeed = CONFIG.settings.spells.shotBaseSpeed;
+        state.game.physics.arcade.moveToXY(sprite, dest[0], dest[1], (data.power == 'low') ? shotSpeed : shotSpeed * 2);
         
         // Create an emitter for particle effects
         // add draw emitter
@@ -168,7 +177,7 @@ PlayfieldState.prototype.create = function() {
         projectileEmitter.minParticleScale = 0.5;
         projectileEmitter.maxParticleScale = 1;
         projectileEmitter.setYSpeed(-20, 50);
-        projectileEmitter.setXSpeed(400, 0);
+        projectileEmitter.setXSpeed(0, 400);
         projectileEmitter.alpha = 1;
         projectileEmitter.minRotation = -10;
         projectileEmitter.maxRotation = 10;
@@ -308,12 +317,50 @@ PlayfieldState.prototype.update = function() {
     // Handler for a projectile hitting a player
     var playerHit = function (player, projectile) {
         player.damage(projectile.damageDealt);
-        console.log('player hit, health remaining: ' + player.health);
+        if ( !player.exists ) {
+            playerDead(player);
+        }
         projectile.kill();
 
         // Play collision sound
         state.audio_collide.play();
-    }
+    };
+    // Handler for player dying (health reaches zero)
+    var playerDead = function (player) {
+        // Clear the visual and any spells
+        state[player.name + 'Wizard'].clear();
+        var wizard = state.wizards[player.name];
+        if ( wizard.preppedSpell ) {
+            wizard.preppedSpell.kill();
+            wizard.preppedSpell = false;
+        }
+        
+        // Particle explosion!
+        // Create an emitter for particle effects
+        // add draw emitter
+        var geGfx = state.add.graphics(-20, -20);
+        geGfx.beginFill(0xffcc00);
+        geGfx.drawRect(0, 0, 10, 10);
+        var geTex = state.add.renderTexture(geGfx.width, geGfx.height);
+        geTex.renderXY(geGfx, 0, 0, true);
+        
+        var pos = state.wizards[player.name].position;
+        var deathEmitter = state.add.emitter(pos[0], pos[1], 200);
+        deathEmitter.width = 50;
+        deathEmitter.height = 50;
+        deathEmitter.minParticleScale = 0.5;
+        deathEmitter.maxParticleScale = 1;
+        deathEmitter.setYSpeed(-500, 500);
+        deathEmitter.setXSpeed(-500, 500);
+        deathEmitter.alpha = 1;
+        deathEmitter.minRotation = -10;
+        deathEmitter.maxRotation = 10;
+        deathEmitter.makeParticles(geTex);
+        deathEmitter.gravity = 0;
+        deathEmitter.start(false, 500, 1, 0);
+        // Emitter can be destroyed two seconds later
+        state.game.time.events.add(Phaser.Timer.SECOND * 2, deathEmitter.destroy, deathEmitter);
+    };
     
     if ( state.wizards.right.shield ) {
         state.game.physics.arcade.overlap(state.wizards.left.projectiles, state.wizards.right.shield, shieldHit );
@@ -340,14 +387,8 @@ PlayfieldState.prototype.render = function() {
     if ( this.wizards.left.sprite.exists ) {
         this.leftWizard.render();
     }
-    else {
-        this.leftWizard.clear();
-    }
     if ( this.wizards.right.sprite.exists ) {
         this.rightWizard.render();
-    }
-    else {
-        this.rightWizard.clear();
     }
     this.leftTower.render();
     this.rightTower.render();
