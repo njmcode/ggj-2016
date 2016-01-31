@@ -48,7 +48,7 @@ var CONFIG = {
     // Game settings
     settings: {
         health: {
-            base: 20,
+            base: 100,
             max: 100
         },
         mana: {
