@@ -1,6 +1,7 @@
 'use strict';
 
 var CONFIG = require('../config');
+var _common = require('./_common');
 var Wizard = require('../actors/wizard');
 var Tower = require('../actors/tower');
 var socket, gameID;
@@ -15,6 +16,10 @@ var PlayfieldState = function(){
         left: [200, 300],
         right: [600, 300]
     }
+};
+
+PlayfieldState.prototype.preload = function() {
+    _common.setGameScale(this.game);
 };
 
 PlayfieldState.prototype.create = function() {
