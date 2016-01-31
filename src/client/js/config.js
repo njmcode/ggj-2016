@@ -52,8 +52,8 @@ var CONFIG = {
             max: 100
         },
         mana: {
-            base: 10,
-            max: 15,
+            base: 5,
+            max: 10,
             regen: 1  // How often (secs) mana is incremented by 1
         },
         manaCost: {

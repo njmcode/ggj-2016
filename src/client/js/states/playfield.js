@@ -378,7 +378,7 @@ PlayfieldState.prototype.update = function() {
         var winStyle = Object.create(CONFIG.font.baseStyle);
         winStyle.fill = '#e90f50';
         var winnerText = 'Player ' + ((player.name == 'left') ? '2' : '1') + ' wins!';
-        var tx = state.add.text(state.game.width / 2, 10, winnerText, winStyle);
+        var tx = state.add.text(state.game.width / 2, state.game.height / 2, winnerText, winStyle);
         tx.anchor.setTo(0.5, 0.5);
         
         // Particle explosion!
