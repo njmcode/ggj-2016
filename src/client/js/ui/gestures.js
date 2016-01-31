@@ -1,38 +1,60 @@
 
 var points = [];
 
-var detector = new DollarRecognizer();
-var callbacks = {
-	success: null,
-	fail: null
-};
+var detector, hamDetector;
+
+var callbacks = {};
 var state;
 
-function addPointFromTouch(t) {
-    points.push(new Point(t.clientX, t.clientY));
+var targetEl;
+
+function addPointFromTouch(state, t) {
+	/*var x = t.clientX - targetEl.offsetLeft, 
+		y = t.clientY - targetEl.offsetTop;*/
+	var x = state.game.input.x,
+		y = state.game.input.y;
+
+    points.push(new Point(x, y));
+    callbacks.onDraw.call(state, x, y);
 }
 
-function addPointFromMouse(e) {
-    points.push(new Point(e.clientX, e.clientY));
+function addPointFromMouse(state, t) {
+    /*var x = t.clientX - targetEl.offsetLeft, 
+		y = t.clientY - targetEl.offsetTop;*/
+	var x = state.game.input.x,
+		y = state.game.input.y;
+
+    points.push(new Point(x, y));
+    callbacks.onDraw.call(state, x, y);
 }
 
 function _init(state, appEl, cbs) {
+
 	state = state;
 	callbacks = cbs;
+	targetEl = appEl;
+
+	detector = new DollarRecognizer();
+
+	hamDetector = new Hammer(appEl);
+	hamDetector.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+
+
+	/** Dollar.js events **/
 
 	/** Touch events **/
 	appEl.addEventListener('touchstart', function(e) {
 	    points = [];
-	    addPointFromTouch(e.changedTouches[0]);
+	    addPointFromTouch(state, e.changedTouches[0]);
 	}, false)
 
 	appEl.addEventListener('touchmove', function(e) {
-	    addPointFromTouch(e.changedTouches[0]);
+	    addPointFromTouch(state, e.changedTouches[0]);
 	}, false);
 
 	appEl.addEventListener('touchend', function(e) {
-	    addPointFromTouch(e.changedTouches[0]);
-	    _detectShape();
+	    addPointFromTouch(state, e.changedTouches[0]);
+	    _detectShape(state);
 	});
 
 	/** Mouse events **/
@@ -40,29 +62,47 @@ function _init(state, appEl, cbs) {
 	appEl.addEventListener('mousedown', function(e) {
 	    _isDrawing = true;
 	    points = [];
-	    addPointFromMouse(e);
+	    addPointFromMouse(state, e);
 	});
 
 	appEl.addEventListener('mousemove', function(e) {
 	    if(!_isDrawing) return false;
-	    addPointFromMouse(e); // TODO: throttle
+	    addPointFromMouse(state, e); // TODO: throttle
 	});
 
 	appEl.addEventListener('mouseup', function(e) {
 	    _isDrawing = false;
-	    addPointFromMouse(e);
-	    _detectShape();
+	    addPointFromMouse(state, e);
+	    _detectShape(state);
 	});
+
+	/** HammerJS swipe events **/
+    hamDetector.on('swipeleft', function() {
+    	_handleSwipe(state, 'left');
+    });
+    hamDetector.on('swiperight', function() {
+    	_handleSwipe(state, 'right');
+    });
+    hamDetector.on('swipeup', function() {
+    	_handleSwipe(state, 'up');
+    });
+    hamDetector.on('swipedown', function() {
+    	_handleSwipe(state, 'down');
+    });
 }
 
 
-function _detectShape() {
+function _detectShape(state) {
     if (points.length > 10) {
         var shape = detector.Recognize(points, false);
-        callbacks.success.call(state, shape.Name);
+        callbacks.onGesture.call(state, shape.Name);
     } else {
-        callbacks.fail.call(state);
+        callbacks.onBadGesture.call(state);
     }
+}
+
+function _handleSwipe(state, dir) {
+	callbacks.onSwipe.call(state, dir);
 }
 
 function _destroy() {

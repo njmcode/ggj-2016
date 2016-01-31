@@ -5,12 +5,14 @@
 **/
 var Assets = require('../assets');
 var CONFIG = require('../config');
+var _common = require('./_common');
 
 var StartupState = function(){
 };
 
 
 StartupState.prototype.preload = function() {
+    _common.setGameScale(this.game);
 
     var self = this;
 
