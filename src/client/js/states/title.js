@@ -12,9 +12,13 @@ var TitleState = function(){};
 
 TitleState.prototype.preload = function() {
     _common.setGameScale(this.game);
+    this.load.crossOrigin = 'anonymous';
+    this.load.image('qr-code', window.qrCode);
 }
 
 TitleState.prototype.create = function() {
+    
+    
     this.add.sprite(0, 0, 'starfield');
 
     var clouds = this.add.sprite(0, 0, 'clouds');
@@ -36,13 +40,7 @@ TitleState.prototype.create = function() {
     this.ghostTitle = this.add.sprite(400, 120, 'title-logo');
     this.ghostTitle.anchor.set(0.5);
     this.ghostTitle.alpha = 0.4;
-
-
     this.ghostTitle.tint = 0xffaacc;
-    this.time.events.loop(20, function() {
-        this.ghostTitle.position.x = 400 + this.game.rnd.integerInRange(-5, 5);
-        this.ghostTitle.position.y = 120 + this.game.rnd.integerInRange(-5, 5);
-    }, this);
 
     this.title = this.add.sprite(400, 120, 'title-logo');
     this.title.anchor.set(0.5);
@@ -51,7 +49,14 @@ TitleState.prototype.create = function() {
         this.game.height - 10, STRINGS.titleCredit, CONFIG.font.smallStyle);
     this.creditText.anchor.setTo(0.5, 1);
 
+    this.qr = this.add.sprite(250, 250, 'qr-code');
+    this.qr.anchor.set(0.5);
+    this.qr.scale.set(0.5);
+
+    var style = { font: "18px VT323", fill: "#aaaaaa", wordWrap: true, wordWrapWidth: 180, align: "center" };
+    this.info = this.add.text(430, 210, STRINGS.titleJoinPrompt + window.joinURL, style);
 };
+
 
 TitleState.prototype.update = function() {
     this.layers.forEach(function(layer) {
@@ -62,6 +67,9 @@ TitleState.prototype.update = function() {
             layer.body.velocity.x = (Math.random()) * (-10);
         }
     });
+
+    this.ghostTitle.position.x = 400 + this.game.rnd.integerInRange(-5, 5);
+    this.ghostTitle.position.y = 120 + this.game.rnd.integerInRange(-5, 5);
 };
 
 
