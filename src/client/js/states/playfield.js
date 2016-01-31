@@ -183,7 +183,8 @@ PlayfieldState.prototype.create = function() {
 };
 
 PlayfieldState.prototype.createBackground = function() {
-    this.add.sprite(0, 0, 'starfield');
+    this.starBG = this.add.tileSprite(0, 0, 800, 300, 'starfield', 0);
+
     var clouds = this.add.sprite(0, 0, 'clouds');
     this.add.tween(clouds).to({ alpha: 0.5 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1).yoyo(true);
     this.add.sprite(0, 0, 'dusk-mask');
@@ -253,6 +254,8 @@ PlayfieldState.prototype.update = function() {
             layer.body.velocity.x = (Math.random()) * (-10);
         }
     });
+
+    this.starBG.tilePosition.x += 0.1;
 };
 
 PlayfieldState.prototype.render = function() {
