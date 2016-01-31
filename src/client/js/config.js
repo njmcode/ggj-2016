@@ -21,8 +21,8 @@ var CONFIG = {
 
     // Pixel size of the controller's Phaser canvas.
     controllerGameSize: {
-        width: 500,
-        height: 500
+        width: 400,
+        height: 800
     },
 
     // Font style definitions
