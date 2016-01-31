@@ -127,7 +127,7 @@ PlayfieldState.prototype.create = function() {
     
     // Player is preparing a spell
     var prepSpell = function(onSide, data) {
-        var pos, xOffset, sprite;
+        var pos, xOffset, sprite, scaleVal;
         
         // Who is preparing the spell?
         pos = state.wizards[onSide].position;
@@ -148,7 +148,8 @@ PlayfieldState.prototype.create = function() {
         // Create the sprite, and hold it
         sprite = state.game.add.sprite(pos[0], pos[1] + xOffset, data.intent);
         sprite.anchor.setTo(0.5, 0.5);
-        sprite.scale.setTo( (onSide == 'left') ? -0.25 : 0.25, 0.25);
+        scaleVal = (data.intent == 'shot') ? 0.15 : 0.25;
+        sprite.scale.setTo( (onSide == 'left') ? -scaleVal : scaleVal, scaleVal);
         
         state.wizards[onSide].preppedSpell = sprite;
 
@@ -188,6 +189,7 @@ PlayfieldState.prototype.create = function() {
         
         state.wizards[fromSide].projectiles.add(sprite);
         state.game.physics.enable(sprite);
+        sprite.scale.setTo( (fromSide == 'left') ? -0.25 : 0.25, 0.25);
         sprite.checkWorldBounds = true;
         sprite.outOfBoundsKill = true;
         sprite.damageDealt = CONFIG.settings.spells.shotDamage;     // Changes based on gesture modifiers
