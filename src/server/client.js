@@ -23,8 +23,9 @@ Client.prototype = {
     onHost: function(data) {
         var self = this;
         this.game = data.game;
-        db.getOrCreate(this.game, function() {
+        db.getOrCreate(this.game, function(details) {
             self.socket.join(self.game);
+            self.socket.emit('room', details);
         });
     },
     onJoin: function(data) {
@@ -47,7 +48,9 @@ Client.prototype = {
                     'reason': 'Room full'
                 });
             }
+            console.log(details);
             db.conn.set(self.game, JSON.stringify(details));
+            self.socket.broadcast.to(self.game).emit('room', details);
             self.socket.emit('join', {
                 id: self.id,
                 position: self.position,

@@ -24,25 +24,26 @@ StartupState.prototype.preload = function() {
     self.loaderText.anchor.setTo(1,1);
 
     Assets.preload(self, function(progress, cacheKey, success, totalLoaded, totalFiles) {
+        console.log('preload', progress, cacheKey, totalLoaded, totalFiles);
+
         var updateText = progress.toString() + '% - LOADING...';
         self.loaderText.setText(updateText);
-
-        if(totalLoaded === totalFiles) {
-            console.log('All assets loaded');
-            if (window.location.hash) {
-                self.game.state.start(window.location.hash.substr(1));
-            } else {
-                self.game.state.start(CONFIG.stateAfterStartup);
-            }
-        }
     });
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
 };
 
 StartupState.prototype.create = function() {
-
+    var self = this;
+    _common.socket = io.connect();
+    _common.socket.on('connect', function() {
+        console.log('connect', window.game);
+        if (window.location.hash) {
+            self.game.state.start(window.location.hash.substr(1));
+        } else {
+            self.game.state.start(CONFIG.stateAfterStartup);
+        }
+    });
 };
 
 
