@@ -16,6 +16,7 @@ var PlayfieldState = function(){
 PlayfieldState.prototype.create = function() {
     console.log('PLAY FIELD');
     var state = this;
+    state.wizardMaxHealth = 10;
 
     this.createBackground();
     this.createWizards();
@@ -38,10 +39,10 @@ PlayfieldState.prototype.create = function() {
     };
     state.wizards.left.sprite = state.game.add.sprite(state.wizards.left.position[0], state.wizards.left.position[1], 's-wizard');
     state.wizards.left.sprite.anchor.setTo(1, 0.5);
-    state.wizards.left.sprite.health = 10;
+    state.wizards.left.sprite.health = state.wizardMaxHealth;
     state.wizards.right.sprite = state.game.add.sprite(state.wizards.right.position[0], state.wizards.right.position[1], 's-wizard');
     state.wizards.right.sprite.anchor.setTo(0, 0.5);
-    state.wizards.right.sprite.health = 10;
+    state.wizards.right.sprite.health = state.wizardMaxHealth;
     state.game.physics.enable([state.wizards.left.sprite, state.wizards.right.sprite]);
     
     // Create groups for projectiles and shields
@@ -75,7 +76,7 @@ PlayfieldState.prototype.create = function() {
     
     // Function to handle generating a shield
     var raiseShield = function (atSide, data) {
-        var pos;
+        var pos, xOffset;
         
         // Kill any existing shield
         if ( state.wizards[atSide].shield ) {
@@ -85,12 +86,13 @@ PlayfieldState.prototype.create = function() {
         
         // Which side is creating the shield?
         pos = state.wizards[atSide].position;
+        xOffset = (atSide == 'left') ? 10 : -10;
         
         // Create the shield, and set the physics options
-        state.wizards[atSide].shield = state.game.add.sprite(pos[0], pos[1], 'shield');
+        state.wizards[atSide].shield = state.game.add.sprite(pos[0] + xOffset, pos[1], 'shield');
         state.game.physics.enable(state.wizards[atSide].shield);
-        state.wizards[atSide].shield.anchor.setTo(0.5, 1);
-        state.wizards[atSide].shield.scale.setTo( (atSide == 'left') ? -0.5 : 0.5, 0.5);
+        state.wizards[atSide].shield.anchor.setTo(0.5, 0.5);
+        state.wizards[atSide].shield.scale.setTo( (atSide == 'left') ? -0.5 : 0.5, 1);
         state.wizards[atSide].shield.health = 1;      // Changes based on gesture modifiers
         state.wizards[atSide].shield.lifespan = Phaser.Timer.SECOND * 4;      // Shields automatically fade after a given amount of time
         state.wizards[atSide].shield.name = atSide;
