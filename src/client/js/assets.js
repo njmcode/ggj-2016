@@ -26,7 +26,9 @@ var assets = {
     ],
     // Format is [key, path, width, height]
     images: [
-        ['s-wizard', 'public/assets/wizard.png', 128, 128]
+        ['s-wizard', 'public/assets/empty.png', 40, 120],
+        ['shot', 'public/assets/spell-shot.png', 128, 128],
+        ['shield', 'public/assets/spell-shield.png', 128, 128]
     ],
     // Audio files to load
     sounds: [
