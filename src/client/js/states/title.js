@@ -26,6 +26,39 @@ TitleState.prototype.create = function() {
 
     this.title = this.add.sprite(400, 120, 'title-logo');
     this.title.anchor.set(0.5);
+
+    this.leftWizard = this.game.add.graphics(40, 60);
+    this.rightWizard = this.game.add.graphics(700, 60);
+};
+
+TitleState.prototype.drawWizard = function(gfx, color) {
+    var rand = function() {
+        return (Math.random() - 0.5) * 10;
+    }
+    gfx.clear();
+    gfx.lineStyle(2, color);
+    var points = [
+        [30 + rand(), 50 + rand()],
+        [20 + rand(), 20 + rand()],
+        [40 + rand(), 10 + rand()],
+        [30 + rand(), 50 + rand()],
+        [30 + rand(), 70 + rand()],
+        [20 + rand(), 70 + rand()],
+        [30 + rand(), 70 + rand()],
+        [40 + rand(), 70 + rand()],
+        [30 + rand(), 90 + rand()],
+        [20 + rand(), 120 + rand()],
+        [30 + rand(), 90 + rand()],
+        [40 + rand(), 120 + rand()],
+    ];
+    points.forEach(function(pnt) {
+        gfx.lineTo(pnt[0], pnt[1]);
+    }, this);
+};
+
+TitleState.prototype.preRender = function() {
+    this.drawWizard(this.leftWizard, 0x8833AA);
+    this.drawWizard(this.rightWizard, 0x4411BB);
 };
 
 TitleState.prototype.update = function() {
