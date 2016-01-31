@@ -19,7 +19,6 @@ PlayfieldState.prototype.create = function() {
     this.socket = _common.socket;
     
     var state = this;
-    state.wizardMaxHealth = 10;
 
     this.createBackground();
     this.createWizards();
@@ -53,12 +52,17 @@ PlayfieldState.prototype.create = function() {
     state.wizards.left.sprite.name = 'left';
     state.wizards.left.sprite.anchor.setTo(1, 0.5);
     state.wizards.left.sprite.health = CONFIG.settings.health.base;
-    state.wizards.left.sprite.mana = CONFIG.settings.mana.base;
+    state.wizards.left.sprite.name = 'left';
+
     state.wizards.right.sprite = state.game.add.sprite(state.wizards.right.position[0], state.wizards.right.position[1], 's-wizard');
     state.wizards.right.sprite.name = 'right';
     state.wizards.right.sprite.anchor.setTo(0, 0.5);
     state.wizards.right.sprite.health = CONFIG.settings.health.base;
+    state.wizards.right.sprite.name = 'right';
+
+    state.wizards.left.sprite.mana = CONFIG.settings.mana.base;
     state.wizards.right.sprite.mana = CONFIG.settings.mana.base;
+
     state.game.physics.enable([state.wizards.left.sprite, state.wizards.right.sprite]);
     
     // Create groups for projectiles and shields
@@ -66,14 +70,40 @@ PlayfieldState.prototype.create = function() {
     state.wizards.left.projectiles.physicsBodyType = Phaser.Physics.Arcade;
     state.wizards.right.projectiles.enableBody = true;
     state.wizards.right.projectiles.physicsBodyType = Phaser.Physics.Arcade;
+
+    // Add meters for health and mana
+    var hStyle = Object.create(CONFIG.font.baseStyle);
+    hStyle.fill = '#e90f50';
+
+    var mStyle = Object.create(CONFIG.font.baseStyle);
+    mStyle.fill = '#456670';
+
+    state.meters = {};
+    ['left','right'].forEach(function(dir) {
+        state.meters[dir] = {};
+        
+        var x = (dir === 'left') ? 10 : state.game.width - 10,
+            y = 10;
+        var tx = state.add.text(x, y, CONFIG.settings.health.base, hStyle);
+        if(dir === 'right') tx.anchor.setTo(1, 0);
+        state.meters[dir].health = tx;
+
+        var y = 30;
+        var tx = state.add.text(x, y, CONFIG.settings.mana.base, mStyle);
+        if(dir === 'right') tx.anchor.setTo(1, 0);
+        state.meters[dir].mana = tx;
+    });
+    
     
     // Players automatically regenerate mana over time
     var regenMana = function () {
         if ( state.wizards.left.sprite.mana < CONFIG.settings.mana.max ) {
             state.wizards.left.sprite.mana++;
+            state.meters.left.mana.setText(state.wizards.left.sprite.mana);
         }
         if ( state.wizards.right.sprite.mana < CONFIG.settings.mana.max ) {
             state.wizards.right.sprite.mana++;
+            state.meters.right.mana.setText(state.wizards.right.sprite.mana);
         }
     };
     var regenTimer = state.game.time.events.add(Phaser.Timer.SECOND * CONFIG.settings.mana.regen, regenMana, state);
@@ -146,6 +176,7 @@ PlayfieldState.prototype.create = function() {
         }
         else {
             state.wizards[fromSide].sprite.mana -= cost;
+            state.meters[fromSide].mana.setText(state.wizards[fromSide].sprite.mana);
         }
         
         // Where are we firing at?
@@ -210,6 +241,7 @@ PlayfieldState.prototype.create = function() {
         }
         else {
             state.wizards[atSide].sprite.mana -= cost;
+            state.meters[atSide].mana.setText(state.wizards[atSide].sprite.mana);
         }
         console.log('duck and cover!', 'cost: ' + cost, 'mana remaining: ' + state.wizards[atSide].sprite.mana);
         
@@ -317,6 +349,7 @@ PlayfieldState.prototype.update = function() {
     // Handler for a projectile hitting a player
     var playerHit = function (player, projectile) {
         player.damage(projectile.damageDealt);
+        state.meters[player.name].health.setText(player.health);
         if ( !player.exists ) {
             playerDead(player);
         }

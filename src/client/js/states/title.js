@@ -16,7 +16,6 @@ TitleState.prototype.preload = function() {
     this.load.image('qr-code', window.qrCode);
 }
 
-
 TitleState.prototype.create = function() {
     
     this.theme = this.add.audio('title-theme');
@@ -95,7 +94,7 @@ TitleState.prototype.handleRoomStatus = function(data) {
     if (data.left != null && data.right != null) {
         this.state.start('PlayField');
     }
-}
+};
 
 
 module.exports = TitleState;
