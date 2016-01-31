@@ -18,7 +18,9 @@ TitleState.prototype.preload = function() {
 
 TitleState.prototype.create = function() {
     
-    
+    this.theme = this.add.audio('title-theme');
+    this.theme.play();
+
     this.add.sprite(0, 0, 'starfield');
 
     var clouds = this.add.sprite(0, 0, 'clouds');
