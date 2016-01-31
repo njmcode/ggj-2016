@@ -4,6 +4,7 @@
 **/
 
 var CONFIG = require('../config');
+var gestureEngine = require('../ui/gestures');
 
 var statusText, fireButton, shieldButton;
 
@@ -30,6 +31,14 @@ function _doShield() {
 	});
 }
 
+function _onGestureDetect(gestureName) {
+    console.log('gesture detected', gestureName);
+}
+
+function _onGestureFail() {
+    console.log('gesture failed');
+}
+
 var ControllerState = function(){};
 
 ControllerState.prototype.preload = function() {
@@ -41,6 +50,10 @@ ControllerState.prototype.create = function() {
     console.log('CONTROLLER UI');
 
     _setupSocket();
+    gestureEngine.init(this, this.game.canvas, {
+        success: _onGestureDetect,
+        fail: _onGestureFail
+    });
 
     console.log('Game is', gameID);
     
@@ -48,13 +61,13 @@ ControllerState.prototype.create = function() {
     statusText = this.add.text(10, 10, '', CONFIG.font.smallStyle);
 
     // Add fire and shield buttons
-    fireButton = this.add.button(this.game.width * 0.5,
+    /*fireButton = this.add.button(this.game.width * 0.5,
     	this.game.height * 0.25, 'icon-fire', _fireProjectile);
     fireButton.anchor.setTo(0.5, 0.5);
 
     shieldButton = this.add.button(this.game.width * 0.5,
     	this.game.height * 0.75, 'icon-shield', _doShield);
-    shieldButton.anchor.setTo(0.5, 0.5);
+    shieldButton.anchor.setTo(0.5, 0.5);*/
 
     // Connect event
     socket.on('connect', function() {
