@@ -45,6 +45,30 @@ var CONFIG = {
         }
     },
 
+    // Game settings
+    settings: {
+        health: {
+            base: 100,
+            max: 100
+        },
+        mana: {
+            base: 10,
+            max: 15,
+            regen: 1  // How often (secs) mana is incremented by 1
+        },
+        manaCost: {
+            shot: 1,
+            shield: 1,
+            standard: 0,  // Standard attacks have no extra cost
+            wind: 2,
+            earth: 2,
+            fire: 2,
+            water: 2,
+            powerMultiplier: 2  // How much cost is multiplied by for a power manoevure
+        },
+        timeLimit: 99
+    }
+
 };
 
 module.exports = CONFIG;
