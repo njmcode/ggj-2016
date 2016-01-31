@@ -106,17 +106,19 @@ function _displayCurrentSpell(state, type) {
     currentSpellIcon.anchor.setTo(0.5, 0.5);
 }
 
-function _visuallyCastCurrentSpell(state, dir) {
+function _visuallyCastCurrentSpell(state, dir, powerType) {
     if(!currentSpell) return false;
     if(!currentSpellIcon) return false;
+
+    var spd = (powerType === 'low') ? SPELL_TRAVEL_TIME : SPELL_TRAVEL_TIME * 0.5;
 
     var vy = (dir === 'up') ? -SPELL_TRAVEL_DIST : SPELL_TRAVEL_DIST;
     var tw = state.game.add.tween(currentSpellIcon.position).to({
             y: state.game.world.centerY + vy,
-        }, SPELL_TRAVEL_TIME).start();
+        }, spd).start();
     var tw2 = state.game.add.tween(currentSpellIcon).to({
         alpha: 0
-    }, SPELL_TRAVEL_TIME, Phaser.Easing.Exponential.In).start();
+    }, spd, Phaser.Easing.Exponential.In).start();
     tw.onComplete.add(function() {
         currentSpellIcon.destroy();
     });
@@ -137,19 +139,19 @@ function _prepSpell(state, spellName) {
     _displayCurrentSpell(state, spellName);
 }
 
-function _doCurrentSpell(state, dir) {
+function _doCurrentSpell(state, dir, powerType) {
     if(!currentSpell) return false;
-    console.log('DO', currentSpell);
+    console.log('DO', currentSpell, dir, powerType);
 
     socket.emit('gesture', {
         'player': playerData.position,
         'rune': currentRune,
         'intent': currentSpell,
-        'power': 'high',
+        'power': powerType,
         'state': 'action'
     });
 
-    _visuallyCastCurrentSpell(state, dir);
+    _visuallyCastCurrentSpell(state, dir, powerType);
 
     // TODO: cooldown
     currentSpell = null;
@@ -196,29 +198,6 @@ function _onGestureDetect(gestureName) {
     }
 }
 
-function throttle(fn, threshhold, scope) {
-  threshhold || (threshhold = 250);
-  var last,
-      deferTimer;
-  return function () {
-    var context = scope || this;
-
-    var now = +new Date,
-        args = arguments;
-    if (last && now < last + threshhold) {
-      // hold on to it
-      clearTimeout(deferTimer);
-      deferTimer = setTimeout(function () {
-        last = now;
-        fn.apply(context, args);
-      }, threshhold);
-    } else {
-      last = now;
-      fn.apply(context, args);
-    }
-  };
-}
-
 function _onGestureDraw(x, y) {
 
     //console.log('gesture', x, y);
@@ -234,22 +213,26 @@ function _onGestureFail() {
     //currentSpell = null;
 }
 
-function _onSwipe(dir) {
+var SPEED_FAST_THRESHOLD = 0.7;
+
+function _onSwipe(dir, speed) {
     
     if(!currentSpell) return false;
 
     var state = this;
 
+    var powerType = (Math.abs(speed) < SPEED_FAST_THRESHOLD) ? 'low' : 'high';
+
     // TODO: cancellation mechanics
     switch(currentSpell) {
         case 'shot':
             if(dir === 'up') {
-                _doCurrentSpell(state, dir);
+                _doCurrentSpell(state, dir, powerType);
             }
             break;
         case 'shield':
             if(dir === 'down') {
-                _doCurrentSpell(state, dir);
+                _doCurrentSpell(state, dir, powerType);
             }
             break;
         default:

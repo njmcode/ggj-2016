@@ -77,17 +77,17 @@ function _init(state, appEl, cbs) {
 	});
 
 	/** HammerJS swipe events **/
-    hamDetector.on('swipeleft', function() {
-    	_handleSwipe(state, 'left');
+    hamDetector.on('swipeleft', function(e) {
+    	_handleSwipe(state, 'left', e.velocity);
     });
-    hamDetector.on('swiperight', function() {
-    	_handleSwipe(state, 'right');
+    hamDetector.on('swiperight', function(e) {
+    	_handleSwipe(state, 'right', e.velocity);
     });
-    hamDetector.on('swipeup', function() {
-    	_handleSwipe(state, 'up');
+    hamDetector.on('swipeup', function(e) {
+    	_handleSwipe(state, 'up', e.velocity);
     });
-    hamDetector.on('swipedown', function() {
-    	_handleSwipe(state, 'down');
+    hamDetector.on('swipedown', function(e) {
+    	_handleSwipe(state, 'down', e.velocity);
     });
 }
 
@@ -101,8 +101,8 @@ function _detectShape(state) {
     }
 }
 
-function _handleSwipe(state, dir) {
-	callbacks.onSwipe.call(state, dir);
+function _handleSwipe(state, dir, vel) {
+	callbacks.onSwipe.call(state, dir, vel);
 }
 
 function _destroy() {

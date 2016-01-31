@@ -32,20 +32,57 @@ var assets = {
     ],
     // Audio files to load
     sounds: [
-        /*[
-            'title-intro',
-            [
-                'static/assets/sounds/escape.mp3',
-                'static/assets/sounds/escape.opus'
-            ]
-        ],*/
-    ],
-    bgm: [
-        /*['title',
-            [
-                'static/assets/bgm/title.mp3', 'static/assets/bgm/title.opus'
-            ]
-        ],*/
+        ['title-theme', ['/public/assets/audio/title-theme.mp3',
+                         '/public/assets/audio/title-theme.opus']
+        ],
+        ['collide1', ['/public/assets/audio/collide1.mp3',
+                      '/public/assets/audio/collide1.opus']
+        ],
+        ['collide2', ['/public/assets/audio/collide2.mp3',
+                      '/public/assets/audio/collide2.opus']
+        ],
+        ['collide3', ['/public/assets/audio/collide3.mp3',
+                      '/public/assets/audio/collide3.opus']
+        ],
+        ['collide4', ['/public/assets/audio/collide4.mp3',
+                      '/public/assets/audio/collide4.opus']
+        ],
+        ['shield-collide1', ['/public/assets/audio/shield-collide1.mp3',
+                             '/public/assets/audio/shield-collide1.opus']
+        ],
+        ['shield-collide2', ['/public/assets/audio/shield-collide2.mp3',
+                             '/public/assets/audio/shield-collide2.opus']
+        ],
+        ['shield-collide3', ['/public/assets/audio/shield-collide3.mp3',
+                             '/public/assets/audio/shield-collide3.opus']
+        ],
+        ['shield-collide4', ['/public/assets/audio/shield-collide4.mp3',
+                             '/public/assets/audio/shield-collide4.opus']
+        ],
+        ['shield1', ['/public/assets/audio/shield1.mp3',
+                     '/public/assets/audio/shield1.opus']
+        ],
+        ['shield2', ['/public/assets/audio/shield2.mp3',
+                     '/public/assets/audio/shield2.opus']
+        ],
+        ['shield3', ['/public/assets/audio/shield3.mp3',
+                     '/public/assets/audio/shield3.opus']
+        ],
+        ['shield4', ['/public/assets/audio/shield4.mp3',
+                     '/public/assets/audio/shield4.opus']
+        ],
+        ['shot1', ['/public/assets/audio/shot1.mp3',
+                   '/public/assets/audio/shot1.opus']
+        ],
+        ['shot2', ['/public/assets/audio/shot2.mp3',
+                   '/public/assets/audio/shot2.opus']
+        ],
+        ['shot3', ['/public/assets/audio/shot3.mp3',
+                   '/public/assets/audio/shot3.opus']
+        ],
+        ['shot4', ['/public/assets/audio/shot4.mp3',
+                   '/public/assets/audio/shot4.opus']
+        ],
     ]
 };
 
@@ -67,11 +104,6 @@ function preloadAssets(game, fileLoadedCallback){
     console.log('Preloading images...');
     assets.images.forEach(function(item) {
         game.load.image(item[0], item[1], item[2], item[3]);
-    });
-
-    console.log('Preloading bgm...');
-    assets.bgm.forEach(function(item) {
-        game.load.audio(item[0], item[1]);
     });
 
     console.log('Preloading sounds...');

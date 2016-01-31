@@ -18,8 +18,11 @@ TitleState.prototype.preload = function() {
 
 TitleState.prototype.create = function() {
     
-    
-    this.add.sprite(0, 0, 'starfield');
+    this.theme = this.add.audio('title-theme');
+    this.theme.play();
+
+    // Phaser.TileSprite.call(this, scene, 0, 0, scene.game.width, scene.game.height, bgImg, 0);
+    this.starBG = this.add.tileSprite(0, 0, 800, 300, 'starfield', 0);
 
     var clouds = this.add.sprite(0, 0, 'clouds');
     this.add.tween(clouds).to({ alpha: 0.5 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1).yoyo(true);
@@ -36,6 +39,8 @@ TitleState.prototype.create = function() {
         this.game.physics.enable(layer, Phaser.Physics.ARCADE);
         layer.body.velocity.x = (Math.random() - 0.5) * 20;
     }, this);
+
+    _common.insertWeather(this.game);
 
     this.presentsTitle = this.add.text(this.game.world.centerX,
         50, STRINGS.titlePresents, CONFIG.font.smallStyle);
@@ -58,8 +63,7 @@ TitleState.prototype.create = function() {
     this.qr.scale.set(0.5);
 
     var style = { font: "18px VT323", fill: "#aaaaaa", wordWrap: true, wordWrapWidth: 180, align: "center" };
-    this.info = this.add.text(430, 210, STRINGS.titleJoinPrompt + window.joinURL, style);
-
+    this.info = this.add.text(390, 210, STRINGS.titleJoinPrompt + window.joinURL, style);
 
     this.socket = _common.socket;
     console.log(this.socket);
@@ -82,6 +86,8 @@ TitleState.prototype.update = function() {
 
     this.ghostTitle.position.x = 400 + this.game.rnd.integerInRange(-5, 5);
     this.ghostTitle.position.y = 120 + this.game.rnd.integerInRange(-5, 5);
+
+    this.starBG.tilePosition.x += 0.1;
 };
 
 TitleState.prototype.handleRoomStatus = function(data) {
@@ -91,7 +97,7 @@ TitleState.prototype.handleRoomStatus = function(data) {
             self.state.start('PlayField');
         }, 2500);
     }
-}
+};
 
 
 module.exports = TitleState;
