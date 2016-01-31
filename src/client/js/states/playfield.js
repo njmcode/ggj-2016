@@ -19,7 +19,6 @@ PlayfieldState.prototype.create = function() {
     this.socket = _common.socket;
     console.log(this.socket);
     var state = this;
-    state.wizardMaxHealth = 10;
 
     this.createBackground();
     this.createWizards();
@@ -44,10 +43,13 @@ PlayfieldState.prototype.create = function() {
     };
     state.wizards.left.sprite = state.game.add.sprite(state.wizards.left.position[0], state.wizards.left.position[1], 's-wizard');
     state.wizards.left.sprite.anchor.setTo(1, 0.5);
-    state.wizards.left.sprite.health = state.wizardMaxHealth;
+    state.wizards.left.sprite.health = CONFIG.settings.health.base;
+    state.wizards.left.sprite.name = 'left';
     state.wizards.right.sprite = state.game.add.sprite(state.wizards.right.position[0], state.wizards.right.position[1], 's-wizard');
     state.wizards.right.sprite.anchor.setTo(0, 0.5);
-    state.wizards.right.sprite.health = state.wizardMaxHealth;
+    state.wizards.right.sprite.health = CONFIG.settings.health.base;
+    state.wizards.left.sprite.name = 'right';
+
     state.game.physics.enable([state.wizards.left.sprite, state.wizards.right.sprite]);
     
     // Create groups for projectiles and shields
@@ -55,6 +57,19 @@ PlayfieldState.prototype.create = function() {
     state.wizards.left.projectiles.physicsBodyType = Phaser.Physics.Arcade;
     state.wizards.right.projectiles.enableBody = true;
     state.wizards.right.projectiles.physicsBodyType = Phaser.Physics.Arcade;
+
+    // Add meters for health and mana
+    var hStyle = Object.create(CONFIG.font.baseStyle);
+    hStyle.fill = '#e90f50';
+    state.meters = {};
+    ['left','right'].forEach(function(dir) {
+        var x = (dir === 'left') ? 10 : state.game.width - 10,
+            y = 10;
+        var tx = state.add.text(x, y, CONFIG.settings.health.base, hStyle);
+        if(dir === 'right') tx.anchor.setTo(1, 0);
+        state.meters[dir] = tx;
+    });
+    console.log('METERS', state.meters);
     
     // Player is preparing a spell
     var prepSpell = function(onSide, data) {
@@ -234,6 +249,7 @@ PlayfieldState.prototype.update = function() {
     var playerHit = function (player, projectile) {
         console.log('player hit', projectile.key, player.key);
         player.damage(projectile.damageDealt);
+        state.meters[player.name].setText(player.health);
         projectile.kill();
     }
     
