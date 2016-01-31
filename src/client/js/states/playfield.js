@@ -24,6 +24,7 @@ PlayfieldState.prototype.create = function() {
     this.createTowers();
 
     // Audio
+    state.bgm = this.add.audio('bgm', 1, true);
     state.audio_prep = this.add.audio('shield2');
     state.audio_shot = this.add.audio('shot3');
     state.audio_shield = this.add.audio('shield1');
@@ -77,6 +78,8 @@ PlayfieldState.prototype.create = function() {
 
     var mStyle = Object.create(CONFIG.font.baseStyle);
     mStyle.fill = '#456670';
+
+    state.bgm.play();
 
     state.meters = {};
     ['left','right'].forEach(function(dir) {
@@ -371,6 +374,13 @@ PlayfieldState.prototype.update = function() {
             wizard.preppedSpell = false;
         }
         
+        // Announce winner
+        var winStyle = Object.create(CONFIG.font.baseStyle);
+        winStyle.fill = '#e90f50';
+        var winnerText = 'Player ' + ((player.name == 'left') ? '2' : '1') + ' wins!';
+        var tx = state.add.text(state.game.width / 2, 10, winnerText, winStyle);
+        tx.anchor.setTo(0.5, 0.5);
+        
         // Particle explosion!
         // Create an emitter for particle effects
         // add draw emitter
@@ -397,8 +407,10 @@ PlayfieldState.prototype.update = function() {
         // Emitter can be destroyed two seconds later
         state.game.time.events.add(Phaser.Timer.SECOND * 2, deathEmitter.destroy, deathEmitter);
 
-        // Play death sound
+        // Play death sound, and set a timer to reload the window
+        state.bgm.stop();
         state.audio_death.play();
+        state.game.time.events.add(Phaser.Timer.SECOND * 5, function () { window.location = '/'; });
     };
     
     if ( state.wizards.right.shield ) {
