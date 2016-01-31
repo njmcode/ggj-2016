@@ -396,8 +396,9 @@ PlayfieldState.prototype.update = function() {
         // Emitter can be destroyed two seconds later
         state.game.time.events.add(Phaser.Timer.SECOND * 2, deathEmitter.destroy, deathEmitter);
 
-        // Play death sound
+        // Play death sound, and set a timer to reload the window
         state.audio_death.play();
+        state.game.time.events.add(Phaser.Timer.SECOND * 5, function () { window.location = '/'; });
     };
     
     if ( state.wizards.right.shield ) {
