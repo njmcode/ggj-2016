@@ -10,8 +10,8 @@ var CONFIG = {
         enabled: false,
     },
 
-    //stateAfterStartup: 'Title',
-    stateAfterStartup: 'PlayField',
+    stateAfterStartup: 'Title',
+    //stateAfterStartup: 'PlayField',
 
     // Pixel size of the Phaser canvas.
     // (Canvas itself is scaled to viewport)
