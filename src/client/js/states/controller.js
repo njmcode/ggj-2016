@@ -55,7 +55,7 @@ function _setupSocket() {
     // to us.
     socket.on('gesture', function(data) {
         console.log('Controller received GESTURE', data);
-        if(statusText && data.action) statusText.setText('Action: ' + data.action);
+        // === data.action
     });
 }
 
@@ -100,11 +100,38 @@ function _doShield() {
 // We analyse what type and set up game logic accordingly.
 function _onGestureDetect(gestureName) {
     console.log('gesture detected', gestureName);
+
+    switch(gestureName) {
+        case 'caret':
+        case 'v':
+            _fireProjectile();
+            break;
+        case 'circle':
+        case 'rectangle':
+            _doShield();
+            break;
+        default:
+            console.log('unknown gesture');
+            break;
+    }
 }
 
 // Fired when a gesture is too short/not done right.
 function _onGestureFail() {
     console.log('gesture failed');
+}
+
+
+/**
+ * UI SETUP & LOGIC
+**/
+function _initBackdrop() {
+
+    // add particle starfield
+
+    // add frame
+
+
 }
 
 
@@ -118,10 +145,12 @@ function _onGestureFail() {
 var ControllerState = function(){};
 
 ControllerState.prototype.preload = function() {
+    // Ensure the scaling mode of the game is properly set.
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.scale.pageAlignHorizontally = true;
     this.game.scale.pageAlignVertically = true;
 
+    // Preload some assets
 	this.load.image('icon-fire', '../public/assets/icon-fire.png');
 	this.load.image('icon-shield', '../public/assets/icon-shield.png');
 };
@@ -129,13 +158,14 @@ ControllerState.prototype.preload = function() {
 ControllerState.prototype.create = function() {
     console.log('CONTROLLER UI');
 
+    // Init socket and gestures
     _setupSocket();
-    _bindControls.call(this);
-    
     gestureEngine.init(this, this.game.canvas, {
         success: _onGestureDetect,
         fail: _onGestureFail
     });
+
+    _initBackdrop.call(this);
     
 };
 
