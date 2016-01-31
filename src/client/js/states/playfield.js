@@ -184,9 +184,11 @@ PlayfieldState.prototype.create = function() {
 
 PlayfieldState.prototype.createBackground = function() {
     this.add.sprite(0, 0, 'starfield');
-    this.add.sprite(0, 0, 'clouds');
+    var clouds = this.add.sprite(0, 0, 'clouds');
+    this.add.tween(clouds).to({ alpha: 0.5 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1).yoyo(true);
     this.add.sprite(0, 0, 'dusk-mask');
     this.add.sprite(0, 0, 'vignette');
+
     this.layers = [
         this.add.sprite(-400, 0, 'layer3'),
         this.add.sprite(-400, 0, 'layer2'),
@@ -196,6 +198,7 @@ PlayfieldState.prototype.createBackground = function() {
         this.game.physics.enable(layer, Phaser.Physics.ARCADE);
         layer.body.velocity.x = (Math.random() - 0.5) * 20;
     }, this);
+    _common.insertWeather(this.game);
 }
 
 PlayfieldState.prototype.createWizards = function() {
