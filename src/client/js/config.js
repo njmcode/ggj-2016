@@ -30,7 +30,7 @@ var CONFIG = {
     font: {
         // Generic/default text
         baseStyle: {
-            font: '46px VT323',
+            font: '24px VT323',
             fill: '#caa',
             stroke: '#000',
             strokeThickness: 1,
