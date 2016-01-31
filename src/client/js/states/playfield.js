@@ -30,6 +30,7 @@ PlayfieldState.prototype.create = function() {
     state.audio_shield = this.add.audio('shield1');
     state.audio_scollide = this.add.audio('shield-collide4');
     state.audio_collide = this.add.audio('collide2');
+    state.audio_death = this.add.audio('shield-collide1');
 
     state.game.physics.startSystem(Phaser.Physics.ARCADE);
     
@@ -395,6 +396,9 @@ PlayfieldState.prototype.update = function() {
         deathEmitter.start(false, 500, 1, 0);
         // Emitter can be destroyed two seconds later
         state.game.time.events.add(Phaser.Timer.SECOND * 2, deathEmitter.destroy, deathEmitter);
+
+        // Play death sound
+        state.audio_death.play();
     };
     
     if ( state.wizards.right.shield ) {
