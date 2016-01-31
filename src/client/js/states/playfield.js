@@ -25,6 +25,13 @@ PlayfieldState.prototype.create = function() {
     this.createWizards();
     this.createTowers();
 
+    // Audio
+    state.audio_prep = this.add.audio('shield2');
+    state.audio_shot = this.add.audio('shot3');
+    state.audio_shield = this.add.audio('shield1');
+    state.audio_scollide = this.add.audio('shield-collide4');
+    state.audio_collide = this.add.audio('collide2');
+
     state.game.physics.startSystem(Phaser.Physics.ARCADE);
     
     // Setup the wizards
@@ -106,6 +113,9 @@ PlayfieldState.prototype.create = function() {
         sprite.scale.setTo( (onSide == 'left') ? -0.25 : 0.25, 0.25);
         
         state.wizards[onSide].preppedSpell = sprite;
+
+        // Play prep sound
+        state.audio_prep.play();
     };
     
     // Function to handle projectile firing
@@ -166,6 +176,9 @@ PlayfieldState.prototype.create = function() {
         projectileEmitter.gravity = 0;
         projectileEmitter.start(false, 500, 1, 0);
         sprite.addChild(projectileEmitter);
+
+        // Play shot sound
+        state.audio_shot.play();
     };
     
     // Function to handle generating a shield
@@ -206,6 +219,9 @@ PlayfieldState.prototype.create = function() {
         state.wizards[atSide].shield.health = 1;      // Changes based on gesture modifiers
         state.wizards[atSide].shield.lifespan = Phaser.Timer.SECOND * CONFIG.settings.spells.shieldLength;      // Shields automatically fade after a given amount of time
         state.wizards[atSide].shield.name = atSide;
+
+        // Play shield sound
+        state.audio_shield.play();
     };
     
     // Connect event
@@ -285,12 +301,18 @@ PlayfieldState.prototype.update = function() {
             state.wizards[shield.name].shield = false;
         }
         projectile.kill();
+
+        // Play shield collision sound
+        state.audio_scollide.play();
     };
     // Handler for a projectile hitting a player
     var playerHit = function (player, projectile) {
         player.damage(projectile.damageDealt);
         console.log('player hit, health remaining: ' + player.health);
         projectile.kill();
+
+        // Play collision sound
+        state.audio_collide.play();
     }
     
     if ( state.wizards.right.shield ) {
