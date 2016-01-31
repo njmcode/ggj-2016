@@ -85,8 +85,11 @@ TitleState.prototype.update = function() {
 };
 
 TitleState.prototype.handleRoomStatus = function(data) {
+    var self = this;
     if (data.left != null && data.right != null) {
-        this.state.start('PlayField');
+        setTimeout(function() {
+            self.state.start('PlayField');
+        }, 2500);
     }
 }
 

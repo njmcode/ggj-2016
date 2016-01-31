@@ -17,7 +17,6 @@ PlayfieldState.prototype.preload = function() {
 PlayfieldState.prototype.create = function() {
     console.log('PLAY FIELD');
     this.socket = _common.socket;
-    console.log(this.socket);
     var state = this;
     state.wizardMaxHealth = 10;
 
@@ -196,7 +195,7 @@ PlayfieldState.prototype.createBackground = function() {
         this.game.physics.enable(layer, Phaser.Physics.ARCADE);
         layer.body.velocity.x = (Math.random() - 0.5) * 20;
     }, this);
-}
+};
 
 PlayfieldState.prototype.createWizards = function() {
     this.leftWizard = new Wizard(this, 0x8833AA, 60, 60);
