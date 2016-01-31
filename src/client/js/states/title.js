@@ -58,8 +58,7 @@ TitleState.prototype.create = function() {
     this.qr.scale.set(0.5);
 
     var style = { font: "18px VT323", fill: "#aaaaaa", wordWrap: true, wordWrapWidth: 180, align: "center" };
-    this.info = this.add.text(430, 210, STRINGS.titleJoinPrompt + window.joinURL, style);
-
+    this.info = this.add.text(390, 210, STRINGS.titleJoinPrompt + window.joinURL, style);
 
     this.socket = _common.socket;
     console.log(this.socket);
