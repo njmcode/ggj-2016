@@ -61,13 +61,12 @@ function _detectShape() {
         var shape = detector.Recognize(points, false);
         callbacks.success.call(state, shape.Name);
     } else {
-        console.log('Shape not recognized or too short');
         callbacks.fail.call(state);
     }
 }
 
 function _destroy() {
-	
+
 }
 
 module.exports = {
