@@ -37,6 +37,10 @@ TitleState.prototype.create = function() {
         layer.body.velocity.x = (Math.random() - 0.5) * 20;
     }, this);
 
+    this.presentsTitle = this.add.text(this.game.world.centerX,
+        50, STRINGS.titlePresents, CONFIG.font.smallStyle);
+    this.presentsTitle.anchor.set(0.5);
+
     this.ghostTitle = this.add.sprite(400, 120, 'title-logo');
     this.ghostTitle.anchor.set(0.5);
     this.ghostTitle.alpha = 0.4;

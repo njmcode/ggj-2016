@@ -20,7 +20,7 @@ StartupState.prototype.preload = function() {
         self.game.width - 40,
         self.game.height - 40,
         '...',
-        CONFIG.font.baseStyle);
+        CONFIG.font.smallStyle);
     self.loaderText.anchor.setTo(1,1);
 
     Assets.preload(self, function(progress, cacheKey, success, totalLoaded, totalFiles) {
