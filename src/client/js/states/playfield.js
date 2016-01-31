@@ -1,7 +1,8 @@
-
+'use strict';
 
 var CONFIG = require('../config');
-
+var Wizard = require('../actors/wizard');
+var Tower = require('../actors/tower');
 var socket, gameID;
 
 function _setupSocket() {
@@ -15,6 +16,11 @@ var PlayfieldState = function(){
 PlayfieldState.prototype.create = function() {
     console.log('PLAY FIELD');
     var state = this;
+
+    this.createBackground();
+    this.createWizards();
+    this.createTowers();
+
     state.game.physics.startSystem(Phaser.Physics.ARCADE);
     
     // Setup the wizards
@@ -114,6 +120,38 @@ PlayfieldState.prototype.create = function() {
     });
 };
 
+PlayfieldState.prototype.createBackground = function() {
+    this.add.sprite(0, 0, 'starfield');
+    this.add.sprite(0, 0, 'clouds');
+    this.add.sprite(0, 0, 'dusk-mask');
+    this.add.sprite(0, 0, 'vignette');
+    this.layers = [
+        this.add.sprite(-400, 0, 'layer3'),
+        this.add.sprite(-400, 0, 'layer2'),
+        this.add.sprite(-400, 0, 'layer1')
+    ];
+    this.layers.forEach(function(layer) {
+        this.game.physics.enable(layer, Phaser.Physics.ARCADE);
+        layer.body.velocity.x = (Math.random() - 0.5) * 20;
+    }, this);
+}
+
+PlayfieldState.prototype.createWizards = function() {
+    this.leftWizard = new Wizard(this, 0x8833AA, 60, 60);
+    this.rightWizard = new Wizard(this, 0x4411BB, 680, 60);
+
+    this.game.add.existing(this.leftWizard);
+    this.game.add.existing(this.rightWizard);
+};
+
+PlayfieldState.prototype.createTowers = function() {
+    this.leftTower = new Tower(this, 20, 160);
+    this.rightTower = new Tower(this, 640, 160);
+
+    this.game.add.existing(this.leftTower);
+    this.game.add.existing(this.rightTower);
+};
+
 PlayfieldState.prototype.update = function() {
     var state = this;
     
@@ -145,6 +183,13 @@ PlayfieldState.prototype.update = function() {
         state.game.physics.arcade.overlap(state.wizards.right.projectiles, state.wizards.left.shield, shieldHit );
     }
     state.game.physics.arcade.overlap(state.wizards.right.projectiles, state.wizards.left.sprite, playerHit);
+};
+
+PlayfieldState.prototype.render = function() {
+    this.leftWizard.render();
+    this.rightWizard.render();
+    this.leftTower.render();
+    this.rightTower.render();
 };
 
 
