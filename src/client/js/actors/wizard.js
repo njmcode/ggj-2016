@@ -5,6 +5,7 @@ var Wizard = function(state, color, x, y) {
     this.game = state.game;
     this.animState = 'idle';
     this.color = color;
+    this.randScale = 80;
 };
 
 Wizard.prototype = Object.create(Phaser.Graphics.prototype);
@@ -30,8 +31,12 @@ Wizard.prototype.pointStates = {
 
 
 Wizard.prototype.render = function() {
+    var self = this;
+    if (self.randScale > 10) {
+        self.randScale -= 3;
+    }
     var rand = function() {
-        return (Math.random() - 0.5) * 10;
+        return (Math.random() - 0.5) * self.randScale;
     }
     this.clear();
     this.lineStyle(2, this.color);

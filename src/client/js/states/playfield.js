@@ -350,6 +350,7 @@ PlayfieldState.prototype.update = function() {
     };
     // Handler for a projectile hitting a player
     var playerHit = function (player, projectile) {
+        state[player.name + 'Wizard'].randScale = 100;
         player.damage(projectile.damageDealt);
         state.meters[player.name].health.setText(player.health);
         if ( !player.exists ) {
