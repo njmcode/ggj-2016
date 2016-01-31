@@ -6,7 +6,7 @@
 var CONFIG = require('../config');
 var gestureEngine = require('../ui/gestures');
 
-var statusText, fireButton, shieldButton;
+var playerText;
 
 /**
  * SOCKET LOGIC
@@ -47,6 +47,8 @@ function _setupSocket() {
         for (var k in data) {
             playerData[k] = data[k];
         }
+        playerData.playerNumber = (playerData.position === 'left') ? 1 : 2;
+        playerText.setText('Player ' + playerData.playerNumber);
     });
 
     // Fired when a gesture is received *from the server*.
@@ -125,13 +127,39 @@ function _onGestureFail() {
 /**
  * UI SETUP & LOGIC
 **/
+
 function _initBackdrop() {
 
     // add particle starfield
+    var pGfx = this.add.graphics(-10, -10);
+    pGfx.beginFill(0x1b0d31);
+    pGfx.drawRect(0, 0, 20, 20);
+    var pTex = this.add.renderTexture(pGfx.width, pGfx.height);
+    pTex.renderXY(pGfx, 0, 0, true);
+
+    // Create and trigger the emitter
+    var emitter = this.add.emitter(this.game.world.centerX, this.game.world.centerY, 1000);
+    emitter.width = this.game.width;
+    emitter.height = this.game.height;
+    emitter.minParticleScale = 0.5;
+    emitter.maxParticleScale =  2;
+    emitter.setYSpeed(-50, 50);
+    emitter.setXSpeed(-50, 50);
+    emitter.alpha = 0.6;
+    emitter.minRotation = 0;
+    emitter.maxRotation = 0;
+    emitter.makeParticles(pTex);
+    emitter.gravity = 0;
+    emitter.start(false, 2000, 1, 0);
+
 
     // add frame
 
 
+    // add player text
+    playerText = this.add.text(this.game.width * 0.5, this.game.height -10, 
+        '', CONFIG.font.baseStyle);
+    playerText.anchor.setTo(0.5, 1);
 }
 
 
