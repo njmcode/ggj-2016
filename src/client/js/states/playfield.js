@@ -76,7 +76,7 @@ PlayfieldState.prototype.create = function() {
             state.wizards.right.sprite.mana++;
         }
     };
-    var regenTimer = state.game.time.events.add(Phaser.Timer.SECOND, regenMana, state);
+    var regenTimer = state.game.time.events.add(Phaser.Timer.SECOND * CONFIG.settings.mana.regen, regenMana, state);
     regenTimer.loop = true;
     
     // Casting a spell costs mana
