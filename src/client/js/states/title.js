@@ -6,8 +6,7 @@
 
 var CONFIG = require('../config');
 
-var TitleState = function(){
-};
+var TitleState = function(){};
 
 TitleState.prototype.create = function() {
     this.add.sprite(0, 0, 'starfield');
@@ -17,7 +16,7 @@ TitleState.prototype.create = function() {
     this.layers = [
         this.add.sprite(-400, 0, 'layer3'),
         this.add.sprite(-400, 0, 'layer2'),
-        this.add.sprite(-400, 0, 'layer1'),
+        this.add.sprite(-400, 0, 'layer1')
     ];
     this.layers.forEach(function(layer) {
         this.game.physics.enable(layer, Phaser.Physics.ARCADE);
