@@ -11,7 +11,6 @@ var CONFIG = {
     },
 
     stateAfterStartup: 'Title',
-    //stateAfterStartup: 'PlayField',
 
     // Pixel size of the Phaser canvas.
     // (Canvas itself is scaled to viewport)
@@ -68,6 +67,7 @@ var CONFIG = {
             powerMultiplier: 2  // How much cost is multiplied by for a power manoevure
         },
         spells: {
+            shotBaseSpeed: 120,
             shotDamage: 10,
             shieldLength: 2     // Time in seconds
         },

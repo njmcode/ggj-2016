@@ -213,7 +213,7 @@ function _onGestureFail() {
     //currentSpell = null;
 }
 
-var SPEED_FAST_THRESHOLD = 0.7;
+var SPEED_FAST_THRESHOLD = 0.6;
 
 function _onSwipe(dir, speed) {
     
