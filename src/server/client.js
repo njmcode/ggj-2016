@@ -48,6 +48,7 @@ Client.prototype = {
                 });
             }
             db.conn.set(self.game, JSON.stringify(details));
+            self.socket.broadcast.to(self.game).emit('room', details);
             self.socket.emit('join', {
                 id: self.id,
                 position: self.position,

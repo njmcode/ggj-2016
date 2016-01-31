@@ -28,7 +28,6 @@ StartupState.prototype.preload = function() {
         self.loaderText.setText(updateText);
 
         if(totalLoaded === totalFiles) {
-            console.log('All assets loaded');
             if (window.location.hash) {
                 self.game.state.start(window.location.hash.substr(1));
             } else {
