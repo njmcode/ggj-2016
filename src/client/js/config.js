@@ -10,8 +10,8 @@ var CONFIG = {
         enabled: false,
     },
 
-    //stateAfterStartup: 'Title',
-    stateAfterStartup: 'PlayField',
+    stateAfterStartup: 'Title',
+    //stateAfterStartup: 'PlayField',
 
     // Pixel size of the Phaser canvas.
     // (Canvas itself is scaled to viewport)
@@ -30,7 +30,7 @@ var CONFIG = {
     font: {
         // Generic/default text
         baseStyle: {
-            font: '46px arial',
+            font: '46px VT323',
             fill: '#caa',
             stroke: '#000',
             strokeThickness: 1,
@@ -38,8 +38,8 @@ var CONFIG = {
         },
 
         smallStyle: {
-            font: '18px arial',
-            fill: '#666',
+            font: '18px VT323',
+            fill: '#c8a',
             stroke: '#000',
             strokeThickness: 1,
             align: 'center'
