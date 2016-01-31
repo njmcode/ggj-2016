@@ -30,6 +30,8 @@ PlayfieldState.prototype.create = function() {
     state.audio_scollide = this.add.audio('shield-collide4');
     state.audio_collide = this.add.audio('collide2');
 
+    this.game.add.sprite(0, 0, 'instructions1');
+
     state.game.physics.startSystem(Phaser.Physics.ARCADE);
     
     // Setup the wizards

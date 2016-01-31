@@ -66,7 +66,6 @@ TitleState.prototype.create = function() {
     this.info = this.add.text(390, 210, STRINGS.titleJoinPrompt + window.joinURL, style);
 
     this.socket = _common.socket;
-    console.log(this.socket);
     this.socket.on('room', this.handleRoomStatus.bind(this));
     this.socket.emit('host', {
         game: window.game
