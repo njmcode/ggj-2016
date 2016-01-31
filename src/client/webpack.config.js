@@ -12,6 +12,11 @@ module.exports = {
         filename: '[name].bundle.js'
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({minimize: true})
+        new webpack.optimize.UglifyJsPlugin({
+            minimize: true,
+            compress: {
+                drop_console: true
+            }
+        })
     ]
 };
