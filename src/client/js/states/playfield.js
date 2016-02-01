@@ -410,7 +410,7 @@ PlayfieldState.prototype.update = function() {
         // Play death sound, and set a timer to reload the window
         state.bgm.stop();
         state.audio_death.play();
-        state.game.time.events.add(Phaser.Timer.SECOND * 5, function () { window.location = '/'; });
+        state.game.time.events.add(Phaser.Timer.SECOND * 5, function () { window.location = '/p/'; });
     };
     
     if ( state.wizards.right.shield ) {

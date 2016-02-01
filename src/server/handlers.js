@@ -6,10 +6,14 @@ var db = require('./database');
 
 var handlers = {
 
+    showIntro: function(req, res) {
+        res.render('intro');
+    },
+
     createGame: function(req, res) {
         var gameKey = randomstring.generate(5);
         db.getOrCreate(gameKey, function() {
-            res.redirect('/' + gameKey);
+            res.redirect('/p/' + gameKey);
         });
     },
 
@@ -33,8 +37,9 @@ var handlers = {
     },
 
     bind: function(app) {
-        app.get('/', handlers.createGame);
-        app.get('/:game', handlers.observeGame);
+        app.get('/', handlers.showIntro);
+        app.get('/p/', handlers.createGame);
+        app.get('/p/:game', handlers.observeGame);
         app.get('/c/:game', handlers.playGame);
         app.get('/qr/:game', handlers.showQR);
     }

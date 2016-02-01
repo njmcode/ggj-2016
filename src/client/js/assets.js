@@ -13,8 +13,8 @@ var assets = {
     // ui, scenes and images are standard image files.
     // Format is [key, path, width, height]
     ui: [
-        ['icon-fire', 'public/assets/icon-fire.png', 128, 128],
-        ['icon-shield', 'public/assets/icon-shield.png', 128, 128],
+        ['icon-fire', '/public/assets/icon-fire.png', 128, 128],
+        ['icon-shield', '/public/assets/icon-shield.png', 128, 128],
         ['title-logo', '/public/assets/title/logo.png', 480, 81],
         ['starfield', '/public/assets/title/starfield.png', 800, 400],
         ['layer1', '/public/assets/title/layer1.png', 800, 400],
@@ -27,9 +27,9 @@ var assets = {
     ],
     // Format is [key, path, width, height]
     images: [
-        ['s-wizard', 'public/assets/empty.png', 40, 120],
-        ['shot', 'public/assets/spell-shot.png', 128, 128],
-        ['shield', 'public/assets/spell-shield.png', 128, 128]
+        ['s-wizard', '/public/assets/empty.png', 40, 120],
+        ['shot', '/public/assets/spell-shot.png', 128, 128],
+        ['shield', '/public/assets/spell-shield.png', 128, 128]
     ],
     // Audio files to load
     sounds: [

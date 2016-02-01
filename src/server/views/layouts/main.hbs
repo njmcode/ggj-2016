@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>Digimancers</title>
+    <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
     <style>
     	body, html {
     		margin: 0;
@@ -11,6 +12,7 @@
     		height: 100%;
     		text-align: center;
             overflow: hidden;
+            font-family: 'VT323', Arial;
     	}
     	body {
     		background: black;
@@ -33,6 +35,35 @@
             border-top: 1px solid #333;
             border-bottom: 1px solid #333;
             box-shadow: 0 0 40px rgba(100, 30, 80, 0.5);
+        }
+
+        .intro {
+            background-image: url(/public/assets/bg.jpg);
+            height: 100%;
+        }
+        .container {
+            display: flex;
+            width: 600px;
+            margin: 0 auto;
+        }
+        .container .details {
+            flex: 1;
+            font-size: 22px;
+            padding: 40px 10px;
+        }
+        .instructions {
+            padding-top: 50px;
+        }
+        .cta {
+            padding: 20px 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .cta a {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4411aa;
         }
     </style>
     <script src="/public/phaser.min.js"></script>
