@@ -17,8 +17,32 @@ backend:
         - database
     ports:
         - 0.0.0.0:5000:5000
+    environment:
+        - VIRTUAL_HOST=digimancer.rehab.party
+        - VIRTUAL_PORT=5000
+        - LETSENCRYPT_HOST="digimancer.rehab.party"
+        - LETSENCRYPT_EMAIL="dan.porter@rehabstudio.com"
     working_dir: /src
     command: make run
+
+nginx:
+    image: jwilder/nginx-proxy
+    volumes:
+        - /data/certs:/etc/nginx/certs:ro
+        - /etc/nginx/vhost.d
+        - /usr/share/nginx/html
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+        - 0.0.0.0:80:80
+        - 0.0.0.0:443:443
+
+proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes_from:
+         - nginx
+    volumes:
+        - /data/certs:/etc/nginx/certs:rw
+        - /var/run/docker.sock:/var/run/docker.sock:ro
 
 database:
     image: redis
