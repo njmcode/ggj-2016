@@ -316,8 +316,8 @@ ControllerState.prototype.preload = function() {
     this.game.scale.pageAlignVertically = true;
 
     // Preload some assets
-	this.load.image('icon-fire', '../public/assets/icon-fire.png');
-	this.load.image('icon-shield', '../public/assets/icon-shield.png');
+	this.load.image('icon-fire', '../static/assets/icon-fire.png');
+	this.load.image('icon-shield', '../static/assets/icon-shield.png');
 };
 
 ControllerState.prototype.create = function() {

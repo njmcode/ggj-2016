@@ -19,7 +19,7 @@ app.engine('.hbs', handlebars({
     extname: '.hbs'
 }));
 app.set('view engine', '.hbs');
-app.use('/public', express.static('public'));
+app.use('/static', express.static('/static'));
 
 handlers.bind(app);
 io.on('connection', function(socket) {
