@@ -451,5 +451,4 @@ PlayfieldState.prototype.render = function() {
     this.rightTower.render();
 };
 
-
 module.exports = PlayfieldState;

@@ -5,14 +5,6 @@
  * Entrypoint for controller-specific logic.
 **/
 
-/*
-if('serviceWorker' in navigator) {
-  navigator.serviceWorker
-           .register('./sw.js')
-           .then(function() { console.log("ServiceWorker registered"); });
-}
-*/
-
 var CONFIG = require('./js/config');
 
 var States = {

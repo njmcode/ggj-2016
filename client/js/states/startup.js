@@ -48,5 +48,4 @@ StartupState.prototype.create = function() {
     });
 };
 
-
 module.exports = StartupState;

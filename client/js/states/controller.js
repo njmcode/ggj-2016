@@ -10,6 +10,7 @@ var gestureEngine = require('../ui/gestures');
 
 var playerText;
 
+
 /**
  * SOCKET LOGIC
  * Init socket connection, track some state, and bind some
@@ -64,7 +65,6 @@ function _setupSocket() {
 }
 
 
-
 /**
  * PLAYER ACTIONS
  * Logic for executing an attack/shield.
@@ -103,7 +103,6 @@ function _displayCurrentSpell(state, type) {
     if(!currentSpell) {
         return false;
     }
-
 
     currentSpellIcon = state.add.image(state.game.world.centerX,
         state.game.world.centerY, typeIcons[type]);
@@ -151,6 +150,7 @@ function _doCurrentSpell(state, dir, powerType) {
     if(!currentSpell) {
         return false;
     }
+
     console.log('DO', currentSpell, dir, powerType);
 
     socket.emit('gesture', {
@@ -256,6 +256,7 @@ function _onSwipe(dir, speed) {
     }
 }
 
+
 /**
  * UI SETUP & LOGIC
 **/
@@ -304,10 +305,7 @@ function _initBackdrop() {
     gestureEmitter.gravity = 0;
     //gestureEmitter.start(false, 500, 1, 0);
 
-
-
     // add frame
-
 
     // add player text
     playerText = this.add.text(this.game.width * 0.5, this.game.height -10,
@@ -355,6 +353,5 @@ ControllerState.prototype.create = function() {
 ControllerState.prototype.update = function() {
 
 };
-
 
 module.exports = ControllerState;

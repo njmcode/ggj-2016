@@ -98,5 +98,4 @@ TitleState.prototype.handleRoomStatus = function(data) {
     }
 };
 
-
 module.exports = TitleState;

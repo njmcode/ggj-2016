@@ -29,7 +29,6 @@ Wizard.prototype.pointStates = {
     ]
 };
 
-
 Wizard.prototype.render = function() {
     var self = this;
     if (self.randScale > 10) {
@@ -47,4 +46,3 @@ Wizard.prototype.render = function() {
 };
 
 module.exports = Wizard;
-
