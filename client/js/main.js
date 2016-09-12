@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * main.js
 **/
@@ -28,6 +30,6 @@ function Main() {
 
 
     game.state.start('Startup');
-};
+}
 
 module.exports = Main;

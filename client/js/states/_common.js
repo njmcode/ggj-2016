@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     setGameScale: function(game) {
         // Ensure the scaling mode of the game is properly set.

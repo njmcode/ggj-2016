@@ -1,3 +1,4 @@
+'use strict';
 
 var points = [];
 
@@ -66,7 +67,9 @@ function _init(state, appEl, cbs) {
     });
 
     appEl.addEventListener('mousemove', function(e) {
-        if(!_isDrawing) return false;
+        if(!_isDrawing) {
+            return false;
+        }
         addPointFromMouse(state, e); // TODO: throttle
     });
 

@@ -88,12 +88,16 @@ PlayfieldState.prototype.create = function() {
         var x = (dir === 'left') ? 10 : state.game.width - 10,
             y = 10;
         var tx = state.add.text(x, y, CONFIG.settings.health.base, hStyle);
-        if(dir === 'right') tx.anchor.setTo(1, 0);
+        if(dir === 'right') {
+            tx.anchor.setTo(1, 0);
+        }
         state.meters[dir].health = tx;
 
         var y = 30;
         var tx = state.add.text(x, y, CONFIG.settings.mana.base, mStyle);
-        if(dir === 'right') tx.anchor.setTo(1, 0);
+        if(dir === 'right') {
+            tx.anchor.setTo(1, 0);
+        }
         state.meters[dir].mana = tx;
     });
 
@@ -121,7 +125,7 @@ PlayfieldState.prototype.create = function() {
         if (modifier) {
             cost += costSheet[modifier];
         }
-        if (power == 'high') {
+        if (power === 'high') {
             cost *= costSheet.powerMultiplier;
         }
 
@@ -134,7 +138,7 @@ PlayfieldState.prototype.create = function() {
 
         // Who is preparing the spell?
         pos = state.wizards[onSide].position;
-        xOffset = (onSide == 'left') ? 10 : -10;
+        xOffset = (onSide === 'left') ? 10 : -10;
 
         // Check for life
         if (!state.wizards[onSide].sprite.exists) {
@@ -151,8 +155,8 @@ PlayfieldState.prototype.create = function() {
         // Create the sprite, and hold it
         sprite = state.game.add.sprite(pos[0], pos[1] + xOffset, data.intent);
         sprite.anchor.setTo(0.5, 0.5);
-        scaleVal = (data.intent == 'shot') ? 0.15 : 0.25;
-        sprite.scale.setTo((onSide == 'left') ? -scaleVal : scaleVal, scaleVal);
+        scaleVal = (data.intent === 'shot') ? 0.15 : 0.25;
+        sprite.scale.setTo((onSide === 'left') ? -scaleVal : scaleVal, scaleVal);
 
         state.wizards[onSide].preppedSpell = sprite;
 
@@ -184,7 +188,7 @@ PlayfieldState.prototype.create = function() {
         }
 
         // Where are we firing at?
-        dest = state.wizards[(fromSide == 'left') ? 'right' : 'left'].position;
+        dest = state.wizards[(fromSide === 'left') ? 'right' : 'left'].position;
 
         // Create the projectile, and set the physics options
         sprite = state.wizards[fromSide].preppedSpell;
@@ -192,12 +196,12 @@ PlayfieldState.prototype.create = function() {
 
         state.wizards[fromSide].projectiles.add(sprite);
         state.game.physics.enable(sprite);
-        sprite.scale.setTo((fromSide == 'left') ? -0.25 : 0.25, 0.25);
+        sprite.scale.setTo((fromSide === 'left') ? -0.25 : 0.25, 0.25);
         sprite.checkWorldBounds = true;
         sprite.outOfBoundsKill = true;
         sprite.damageDealt = CONFIG.settings.spells.shotDamage;     // Changes based on gesture modifiers
         shotSpeed = CONFIG.settings.spells.shotBaseSpeed;
-        state.game.physics.arcade.moveToXY(sprite, dest[0], dest[1], (data.power == 'low') ? shotSpeed : shotSpeed * 2);
+        state.game.physics.arcade.moveToXY(sprite, dest[0], dest[1], (data.power === 'low') ? shotSpeed : shotSpeed * 2);
 
         // Create an emitter for particle effects
         // add draw emitter
@@ -261,7 +265,7 @@ PlayfieldState.prototype.create = function() {
         state.wizards[atSide].preppedSpell = false;
 
         state.game.physics.enable(state.wizards[atSide].shield);
-        state.wizards[atSide].shield.scale.setTo((atSide == 'left') ? -0.5 : 0.5, 1);
+        state.wizards[atSide].shield.scale.setTo((atSide === 'left') ? -0.5 : 0.5, 1);
         state.wizards[atSide].shield.health = 1;      // Changes based on gesture modifiers
         state.wizards[atSide].shield.lifespan = Phaser.Timer.SECOND * CONFIG.settings.spells.shieldLength;      // Shields automatically fade after a given amount of time
         state.wizards[atSide].shield.name = atSide;
@@ -377,7 +381,7 @@ PlayfieldState.prototype.update = function() {
         // Announce winner
         var winStyle = Object.create(CONFIG.font.baseStyle);
         winStyle.fill = '#e90f50';
-        var winnerText = 'Player ' + ((player.name == 'left') ? '2' : '1') + ' wins!';
+        var winnerText = 'Player ' + ((player.name === 'left') ? '2' : '1') + ' wins!';
         var tx = state.add.text(state.game.width / 2, state.game.height / 2, winnerText, winStyle);
         tx.anchor.setTo(0.5, 0.5);
 

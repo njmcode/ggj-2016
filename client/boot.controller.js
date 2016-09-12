@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * boot.controller.js
  * Entrypoint for controller-specific logic.
@@ -33,6 +35,6 @@ function Main() {
     }
 
     game.state.start('Controller');
-};
+}
 
-Main();
+new Main();

@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * controller.js
  * State for the controller UI logic.
@@ -98,7 +100,9 @@ var SPELL_TRAVEL_DIST = 500,
 
 // Show fx for the currently prepped spell
 function _displayCurrentSpell(state, type) {
-    if(!currentSpell) return false;
+    if(!currentSpell) {
+        return false;
+    }
 
 
     currentSpellIcon = state.add.image(state.game.world.centerX,
@@ -107,8 +111,12 @@ function _displayCurrentSpell(state, type) {
 }
 
 function _visuallyCastCurrentSpell(state, dir, powerType) {
-    if(!currentSpell) return false;
-    if(!currentSpellIcon) return false;
+    if(!currentSpell) {
+        return false;
+    }
+    if(!currentSpellIcon) {
+        return false;
+    }
 
     var spd = (powerType === 'low') ? SPELL_TRAVEL_TIME : SPELL_TRAVEL_TIME * 0.5;
 
@@ -140,7 +148,9 @@ function _prepSpell(state, spellName) {
 }
 
 function _doCurrentSpell(state, dir, powerType) {
-    if(!currentSpell) return false;
+    if(!currentSpell) {
+        return false;
+    }
     console.log('DO', currentSpell, dir, powerType);
 
     socket.emit('gesture', {
@@ -158,7 +168,9 @@ function _doCurrentSpell(state, dir, powerType) {
 }
 
 function _cancelCurrentSpell(state) {
-    if(!currentSpell) return false;
+    if(!currentSpell) {
+        return false;
+    }
     // TODO: viz
     currentSpell = null;
 }
@@ -178,7 +190,9 @@ var gestureEmitter;
 function _onGestureDetect(gestureName) {
 
     // TODO: add elemental/status modifier checks
-    if(currentSpell) return false;
+    if(currentSpell) {
+        return false;
+    }
 
     var state = this;
 
@@ -217,7 +231,9 @@ var SPEED_FAST_THRESHOLD = 0.6;
 
 function _onSwipe(dir, speed) {
 
-    if(!currentSpell) return false;
+    if(!currentSpell) {
+        return false;
+    }
 
     var state = this;
 

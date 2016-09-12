@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * boot.js
  * Entrypoint of the app. Initializes the main app.
@@ -12,7 +14,7 @@ window.WebFontConfig = {
         ]
     },
     active: function() {
-        Main();
+        new Main();
     }
 };
 

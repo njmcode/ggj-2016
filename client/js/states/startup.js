@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * startup.js
  * Initial state of the game when loaded.

@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * hypertext.js
  * Specialized Button subclass which behaves like clickable text.

@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * assets.js
  * List of required project assets and some simple logic
@@ -117,7 +119,7 @@ function preloadAssets(game, fileLoadedCallback) {
 
     game.load.start();
 
-};
+}
 
 module.exports = {
     assets: assets,
