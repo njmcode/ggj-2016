@@ -1,0 +1,35 @@
+frontend:
+    image: node:6
+    volumes:
+        - ./client:/src:rprivate
+        - ./static:/static:rprivate
+        - /src/node_modules
+    working_dir: /src
+    command: make build
+
+backend:
+    image: node:6
+    volumes:
+        - ./server:/src:rprivate
+        - ./static:/static:rprivate
+        - /src/node_modules
+    links:
+        - database
+    working_dir: /src
+    command: make run
+
+database:
+    image: redis
+
+nginx:
+    build: nginx
+    volumes:
+        - ./static:/srv/static:rprivate
+        - /etc/nginx:/etc/nginx:rprivate
+        - /etc/letsencrypt:/etc/letsencrypt:rprivate
+        - /var/log/nginx:/var/log/nginx:rprivate
+    links:
+        - backend:backend
+    ports:
+        - 0.0.0.0:80:80
+        - 0.0.0.0:443:443

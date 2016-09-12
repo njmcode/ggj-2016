@@ -1,16 +1,17 @@
 frontend:
-    image: node:5.2.0
+    image: node:6
     volumes:
-        - ./src/client:/src
-        - ./src/server:/server
+        - ./client:/src
+        - ./static:/static
         - /src/node_modules
     working_dir: /src
     command: make watch
 
 backend:
-    image: node:5.2.0
+    image: node:6
     volumes:
-        - ./src/server:/src
+        - ./server:/src
+        - ./static:/static
         - /src/node_modules
     links:
         - database

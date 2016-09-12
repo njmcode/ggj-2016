@@ -8,7 +8,7 @@ module.exports = {
         'controller': './boot.controller.js'
     },
     output: {
-        path: '../server/public/',
+        path: '../static/',
         filename: '[name].bundle.js'
     },
     plugins: [

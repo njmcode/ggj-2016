@@ -2,7 +2,6 @@
 
 *.bundle.js
 *.bundle.js.map
-src/server/public/assets/audio/*.wav
 
 
 # Created by https://www.gitignore.io/api/node,python,linux,osx,sublimetext,vim
