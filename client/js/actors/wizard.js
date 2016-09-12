@@ -37,7 +37,7 @@ Wizard.prototype.render = function() {
     }
     var rand = function() {
         return (Math.random() - 0.5) * self.randScale;
-    }
+    };
     this.clear();
     this.lineStyle(2, this.color);
     var points = this.pointStates[this.animState];

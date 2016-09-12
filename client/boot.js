@@ -11,7 +11,7 @@ window.WebFontConfig = {
             'VT323::latin'
         ]
     },
-    active: function(){
+    active: function() {
         Main();
     }
 };

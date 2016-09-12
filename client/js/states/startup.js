@@ -7,7 +7,7 @@ var Assets = require('../assets');
 var CONFIG = require('../config');
 var _common = require('./_common');
 
-var StartupState = function(){
+var StartupState = function() {
 };
 
 

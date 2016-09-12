@@ -8,16 +8,16 @@ var CONFIG = require('../config');
 var STRINGS = require('../strings');
 var _common = require('./_common');
 
-var TitleState = function(){};
+var TitleState = function() {};
 
 TitleState.prototype.preload = function() {
     _common.setGameScale(this.game);
     this.load.crossOrigin = 'anonymous';
     this.load.image('qr-code', window.qrCode);
-}
+};
 
 TitleState.prototype.create = function() {
-    
+
     this.theme = this.add.audio('title-theme');
     this.theme.play();
 
@@ -25,7 +25,7 @@ TitleState.prototype.create = function() {
     this.starBG = this.add.tileSprite(0, 0, 800, 300, 'starfield', 0);
 
     var clouds = this.add.sprite(0, 0, 'clouds');
-    this.add.tween(clouds).to({ alpha: 0.5 }, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1).yoyo(true);
+    this.add.tween(clouds).to({alpha: 0.5}, 1000, Phaser.Easing.Sinusoidal.InOut, true, 0, -1).yoyo(true);
 
     this.add.sprite(0, 0, 'dusk-mask');
     this.add.sprite(0, 0, 'vignette');
@@ -62,7 +62,7 @@ TitleState.prototype.create = function() {
     this.qr.anchor.set(0.5);
     this.qr.scale.set(0.5);
 
-    var style = { font: "18px VT323", fill: "#aaaaaa", wordWrap: true, wordWrapWidth: 180, align: "center" };
+    var style = {font: '18px VT323', fill: '#aaaaaa', wordWrap: true, wordWrapWidth: 180, align: 'center'};
     this.info = this.add.text(390, 210, STRINGS.titleJoinPrompt + window.joinURL, style);
 
     this.socket = _common.socket;
@@ -78,7 +78,7 @@ TitleState.prototype.update = function() {
         if (layer.body.position.x < -800) {
             layer.body.velocity.x = (Math.random()) * 10;
         }
-        if (layer.body.position.x >0) {
+        if (layer.body.position.x > 0) {
             layer.body.velocity.x = (Math.random()) * (-10);
         }
     });

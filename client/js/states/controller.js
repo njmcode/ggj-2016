@@ -37,7 +37,7 @@ function _setupSocket() {
         console.log('Controller received CONNECT', data);
     });
 
-    
+
     socket.on('join', function(data) {
         console.log('Controller received JOIN', data);
         window.location.hash = data.id;
@@ -114,7 +114,7 @@ function _visuallyCastCurrentSpell(state, dir, powerType) {
 
     var vy = (dir === 'up') ? -SPELL_TRAVEL_DIST : SPELL_TRAVEL_DIST;
     var tw = state.game.add.tween(currentSpellIcon.position).to({
-            y: state.game.world.centerY + vy,
+            y: state.game.world.centerY + vy
         }, spd).start();
     var tw2 = state.game.add.tween(currentSpellIcon).to({
         alpha: 0
@@ -203,8 +203,8 @@ function _onGestureDraw(x, y) {
     //console.log('gesture', x, y);
     gestureEmitter.x = x;
     gestureEmitter.y = y;
-    gestureEmitter.explode(200, 2);  
-    
+    gestureEmitter.explode(200, 2);
+
 }
 
 // Fired when a gesture is too short/not done right.
@@ -216,7 +216,7 @@ function _onGestureFail() {
 var SPEED_FAST_THRESHOLD = 0.6;
 
 function _onSwipe(dir, speed) {
-    
+
     if(!currentSpell) return false;
 
     var state = this;
@@ -294,7 +294,7 @@ function _initBackdrop() {
 
 
     // add player text
-    playerText = this.add.text(this.game.width * 0.5, this.game.height -10, 
+    playerText = this.add.text(this.game.width * 0.5, this.game.height -10,
         '', CONFIG.font.baseStyle);
     playerText.anchor.setTo(0.5, 1);
 }
@@ -307,7 +307,7 @@ function _initBackdrop() {
  * and UI.
 **/
 
-var ControllerState = function(){};
+var ControllerState = function() {};
 
 ControllerState.prototype.preload = function() {
     // Ensure the scaling mode of the game is properly set.
@@ -316,8 +316,8 @@ ControllerState.prototype.preload = function() {
     this.game.scale.pageAlignVertically = true;
 
     // Preload some assets
-	this.load.image('icon-fire', '../static/assets/icon-fire.png');
-	this.load.image('icon-shield', '../static/assets/icon-shield.png');
+    this.load.image('icon-fire', '../static/assets/icon-fire.png');
+    this.load.image('icon-shield', '../static/assets/icon-shield.png');
 };
 
 ControllerState.prototype.create = function() {
@@ -333,7 +333,7 @@ ControllerState.prototype.create = function() {
     });
 
     _initBackdrop.call(this);
-    
+
 };
 
 ControllerState.prototype.update = function() {

@@ -16,16 +16,16 @@ var CONFIG = require('../config');
  * @param ctx - context in which to fire the callback (usually a State instance)
 **/
 function HyperText(state, x, y, text, style, onClickFn, ctx) {
-	// Inherit from Phaser's Button class
+    // Inherit from Phaser's Button class
     Phaser.Button.call(this, state.game, x, y, null, onClickFn, ctx);
 
     // Set text style or use defaults
     this.style = style || CONFIG.font.baseStyle;
-    this.anchor.setTo( 0.5, 0.5 );
+    this.anchor.setTo(0.5, 0.5);
 
     // Create text and align it to the center of the button
     this.text = new Phaser.Text(state.game, 0, 0, text, this.style);
-    this.text.anchor.setTo( 0.5, 0.5 );
+    this.text.anchor.setTo(0.5, 0.5);
     this.addChild(this.text);
 }
 

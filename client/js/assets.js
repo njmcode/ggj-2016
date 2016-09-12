@@ -86,7 +86,7 @@ var assets = {
         ],
         ['shot4', ['/static/assets/audio/shot4.mp3',
                    '/static/assets/audio/shot4.opus']
-        ],
+        ]
     ]
 };
 
@@ -96,7 +96,7 @@ var assets = {
  * @param game - reference to Phaser.Game instance
  * @param fileLoadedCallback - function to fire when *each* file loads
 **/
-function preloadAssets(game, fileLoadedCallback){
+function preloadAssets(game, fileLoadedCallback) {
 
     game.load.onFileComplete.add(fileLoadedCallback, this);
 

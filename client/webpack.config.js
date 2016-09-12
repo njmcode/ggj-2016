@@ -1,6 +1,6 @@
 'use strict';
 
-var webpack = require("webpack");
+var webpack = require('webpack');
 
 module.exports = {
     entry: {

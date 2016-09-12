@@ -20,7 +20,7 @@ var States = {
 /**
  * Main app to bootstrap the controller.
 **/
-function Main(){
+function Main() {
     // Create a new game
     var game = new Phaser.Game(
         CONFIG.controllerGameSize.width,
