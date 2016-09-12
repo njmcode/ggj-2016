@@ -3,7 +3,7 @@ install:
 	npm install
 
 build: install
-	node_modules/.bin/webpack -d
+	npm run build
 
 watch: install
-	node_modules/.bin/webpack -d -w --progress --colors
+	npm run watch
