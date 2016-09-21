@@ -24,8 +24,7 @@ var assets = {
         ['layer3', '/static/assets/title/layer3.png', 800, 400],
         ['clouds', '/static/assets/title/clouds.png', 800, 400],
         ['dusk-mask', '/static/assets/title/dusk_mask.png', 800, 400],
-        ['vignette', '/static/assets/title/vignette.png', 800, 400],
-        ['instructions1', '/static/assets/instructions_fire.gif', 400, 400]
+        ['vignette', '/static/assets/title/vignette.png', 800, 400]
     ],
     // Format is [key, path, width, height]
     images: [
