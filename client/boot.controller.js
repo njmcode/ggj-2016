@@ -1,15 +1,9 @@
+'use strict';
+
 /**
  * boot.controller.js
  * Entrypoint for controller-specific logic.
 **/
-
-/*
-if('serviceWorker' in navigator) {
-  navigator.serviceWorker
-           .register('./sw.js')
-           .then(function() { console.log("ServiceWorker registered"); });
-}
-*/
 
 var CONFIG = require('./js/config');
 
@@ -20,7 +14,7 @@ var States = {
 /**
  * Main app to bootstrap the controller.
 **/
-function Main(){
+function Main() {
     // Create a new game
     var game = new Phaser.Game(
         CONFIG.controllerGameSize.width,
@@ -33,6 +27,6 @@ function Main(){
     }
 
     game.state.start('Controller');
-};
+}
 
-Main();
+new Main();

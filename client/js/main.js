@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * main.js
 **/
@@ -14,7 +16,7 @@ var States = {
  * Main app. Little more than a bootstrap - the
  * game logic resides in the various states.
 **/
-function Main(){
+function Main() {
     // Create a new game
     var game = new Phaser.Game(
         CONFIG.gameSize.width,
@@ -28,6 +30,6 @@ function Main(){
 
 
     game.state.start('Startup');
-};
+}
 
 module.exports = Main;

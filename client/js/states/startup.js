@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * startup.js
  * Initial state of the game when loaded.
@@ -7,7 +9,7 @@ var Assets = require('../assets');
 var CONFIG = require('../config');
 var _common = require('./_common');
 
-var StartupState = function(){
+var StartupState = function() {
 };
 
 
@@ -45,6 +47,5 @@ StartupState.prototype.create = function() {
         }
     });
 };
-
 
 module.exports = StartupState;

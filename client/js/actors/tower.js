@@ -37,7 +37,7 @@ Tower.prototype.blocks = [
     [60, 170, 40, 50],
     [60, 200, 40, 50],
     [60, 230, 40, 50],
-    [60, 260, 40, 50],
+    [60, 260, 40, 50]
 ];
 
 Tower.prototype.render = function() {
@@ -51,7 +51,7 @@ Tower.prototype.render = function() {
     };
     var rgb2hex = function(r, g, b) {
         return (1 << 24) + (r << 16) + (g << 8) + b;
-    }
+    };
     this.clear();
     this.blocks.forEach(function(block) {
         this.beginFill(rgb2hex(

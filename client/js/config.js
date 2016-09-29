@@ -7,7 +7,7 @@
 var CONFIG = {
 
     debug: {
-        enabled: false,
+        enabled: false
     },
 
     stateAfterStartup: 'Title',

@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * boot.js
  * Entrypoint of the app. Initializes the main app.
@@ -11,8 +13,8 @@ window.WebFontConfig = {
             'VT323::latin'
         ]
     },
-    active: function(){
-        Main();
+    active: function() {
+        new Main();
     }
 };
 
@@ -22,5 +24,3 @@ wf.type = 'text/javascript';
 wf.async = 'true';
 var s = document.getElementsByTagName('script')[0];
 s.parentNode.insertBefore(wf, s);
-
-
