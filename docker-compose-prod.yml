@@ -22,7 +22,7 @@ database:
     image: redis
 
 nginx:
-    build: nginx
+    image: fholzer/nginx-brotli
     volumes:
         - ./static:/srv/static:rprivate
         - /etc/nginx:/etc/nginx:rprivate
