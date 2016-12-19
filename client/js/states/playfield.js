@@ -68,9 +68,9 @@ PlayfieldState.prototype.create = function() {
 
     // Create groups for projectiles and shields
     state.wizards.left.projectiles.enableBody = true;
-    state.wizards.left.projectiles.physicsBodyType = Phaser.Physics.Arcade;
+    state.wizards.left.projectiles.physicsBodyType = Phaser.Physics.ARCADE;
     state.wizards.right.projectiles.enableBody = true;
-    state.wizards.right.projectiles.physicsBodyType = Phaser.Physics.Arcade;
+    state.wizards.right.projectiles.physicsBodyType = Phaser.Physics.ARCADE;
 
     // Add meters for health and mana
     var hStyle = Object.create(CONFIG.font.baseStyle);
