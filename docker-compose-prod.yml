@@ -1,5 +1,5 @@
 frontend:
-    image: node:6
+    image: node:7
     volumes:
         - ./client:/src:rprivate
         - ./static:/static:rprivate
@@ -8,7 +8,7 @@ frontend:
     command: make build
 
 backend:
-    image: node:6
+    image: node:7
     volumes:
         - ./server:/src:rprivate
         - ./static:/static:rprivate
@@ -29,7 +29,7 @@ nginx:
         - /etc/letsencrypt:/etc/letsencrypt:rprivate
         - /var/log/nginx:/var/log/nginx:rprivate
     links:
-        - backend:backend
+        - backend
     ports:
         - 0.0.0.0:80:80
         - 0.0.0.0:443:443
