@@ -18,7 +18,7 @@ var handlers = {
     },
 
     observeGame: function(req, res) {
-        var joinURL = req.protocol + '://' + req.headers.host + '/c/' + req.params.game;
+        var joinURL = 'http://' + req.headers.host + '/c/' + req.params.game;
 
         res.render('master', {
             joinURL: joinURL,
@@ -31,8 +31,8 @@ var handlers = {
     },
 
     showQR: function(req, res) {
-        var joinURL = req.protocol + '://' + req.headers.host + '/c/' + req.params.game;
-        var url = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + joinURL;
+        var joinURL = 'http://' + req.headers.host + '/c/' + req.params.game;
+        var url = 'http://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + joinURL;
         request.get(url).pipe(res);
     },
 

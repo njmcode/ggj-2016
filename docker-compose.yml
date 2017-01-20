@@ -1,5 +1,5 @@
 frontend:
-    image: node:7-alpine
+    image: node:6
     volumes:
         - ./client:/src
         - ./static:/static
@@ -8,7 +8,7 @@ frontend:
     command: make watch
 
 backend:
-    image: node:7-alpine
+    image: node:6
     volumes:
         - ./server:/src
         - ./static:/static
@@ -21,4 +21,4 @@ backend:
     command: make run
 
 database:
-    image: redis:alpine
+    image: redis
