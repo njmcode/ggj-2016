@@ -411,6 +411,9 @@ PlayfieldState.prototype.update = function() {
         // Emitter can be destroyed two seconds later
         state.game.time.events.add(Phaser.Timer.SECOND * 2, deathEmitter.destroy, deathEmitter);
 
+        // Let clients know about the victory
+        state.socket.emit('win', {game: gameID});
+
         // Play death sound, and set a timer to reload the window
         state.bgm.stop();
         state.audio_death.play();
