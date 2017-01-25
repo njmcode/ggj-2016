@@ -93,6 +93,7 @@ TitleState.prototype.handleRoomStatus = function(data) {
     var self = this;
     if (data.left != null && data.right != null) {
         setTimeout(function() {
+            self.theme.stop();
             self.state.start('PlayField');
         }, 2500);
     }
