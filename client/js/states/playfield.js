@@ -49,13 +49,13 @@ PlayfieldState.prototype.create = function() {
             position: [680, 130]
         }
     };
-    state.wizards.left.sprite = state.game.add.sprite(state.wizards.left.position[0], state.wizards.left.position[1], 's-wizard');
+    state.wizards.left.sprite = state.game.add.sprite(state.wizards.left.position[0], state.wizards.left.position[1], 'empty');
     state.wizards.left.sprite.name = 'left';
     state.wizards.left.sprite.anchor.setTo(1, 0.5);
     state.wizards.left.sprite.health = CONFIG.settings.health.base;
     state.wizards.left.sprite.name = 'left';
 
-    state.wizards.right.sprite = state.game.add.sprite(state.wizards.right.position[0], state.wizards.right.position[1], 's-wizard');
+    state.wizards.right.sprite = state.game.add.sprite(state.wizards.right.position[0], state.wizards.right.position[1], 'empty');
     state.wizards.right.sprite.name = 'right';
     state.wizards.right.sprite.anchor.setTo(0, 0.5);
     state.wizards.right.sprite.health = CONFIG.settings.health.base;
@@ -155,7 +155,7 @@ PlayfieldState.prototype.create = function() {
         // Create the sprite, and hold it
         sprite = state.game.add.sprite(pos[0], pos[1] + xOffset, data.intent);
         sprite.anchor.setTo(0.5, 0.5);
-        scaleVal = (data.intent === 'shot') ? 0.15 : 0.25;
+        scaleVal = (data.intent === 'spell-shot') ? 0.15 : 0.25;
         sprite.scale.setTo((onSide === 'left') ? -scaleVal : scaleVal, scaleVal);
 
         state.wizards[onSide].preppedSpell = sprite;
@@ -175,7 +175,7 @@ PlayfieldState.prototype.create = function() {
         }
 
         // Player must have enough mana to cast the spell
-        cost = calcManaCost('shot', false, data.power);
+        cost = calcManaCost('spell-shot', false, data.power);
         if (state.wizards[fromSide].sprite.mana < cost) {
             console.log('fizzle - no mana!');
             state.wizards[fromSide].preppedSpell.kill();
@@ -241,7 +241,7 @@ PlayfieldState.prototype.create = function() {
         }
 
         // Player must have enough mana to cast the spell
-        cost = calcManaCost('shield', false, data.power);
+        cost = calcManaCost('spell-shield', false, data.power);
         if (state.wizards[atSide].sprite.mana < cost) {
             console.log('fizzle - no mana!');
             state.wizards[atSide].preppedSpell.kill();
@@ -292,10 +292,10 @@ PlayfieldState.prototype.create = function() {
             // Cast a spell
             case 'action':
                 switch (data.intent) {
-                    case 'shot':
+                    case 'spell-shot':
                         fireProjectile(data.player, data);
                         break;
-                    case 'shield':
+                    case 'spell-shield':
                         raiseShield(data.player, data);
                         break;
                 }

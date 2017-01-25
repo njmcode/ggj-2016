@@ -46,12 +46,12 @@ TitleState.prototype.create = function() {
         50, STRINGS.titlePresents, CONFIG.font.smallStyle);
     this.presentsTitle.anchor.set(0.5);
 
-    this.ghostTitle = this.add.sprite(400, 120, 'title-logo');
+    this.ghostTitle = this.add.sprite(400, 120, 'logo');
     this.ghostTitle.anchor.set(0.5);
     this.ghostTitle.alpha = 0.4;
     this.ghostTitle.tint = 0xffaacc;
 
-    this.title = this.add.sprite(400, 120, 'title-logo');
+    this.title = this.add.sprite(400, 120, 'logo');
     this.title.anchor.set(0.5);
 
     this.creditText = this.add.text(this.game.world.centerX,

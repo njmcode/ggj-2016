@@ -77,8 +77,8 @@ var currentSpell = null,
 var currentSpellIcon = null;
 
 var typeIcons = {
-    'shot': 'icon-fire',
-    'shield': 'icon-shield'
+    'spell-shot': 'icon-fire',
+    'spell-shield': 'icon-shield'
 };
 
 /*
@@ -199,12 +199,12 @@ function _onGestureDetect(gestureName) {
     switch(gestureName) {
         case 'caret':
         case 'v':
-            _prepSpell(state, 'shot');
+            _prepSpell(state, 'spell-shot');
             break;
         case 'circle':
         case 'rectangle':
         case 'pigtail':
-            _prepSpell(state, 'shield');
+            _prepSpell(state, 'spell-shield');
             break;
         default:
             console.log('unknown gesture');
@@ -241,12 +241,12 @@ function _onSwipe(dir, speed) {
 
     // TODO: cancellation mechanics
     switch(currentSpell) {
-        case 'shot':
+        case 'spell-shot':
             if(dir === 'up') {
                 _doCurrentSpell(state, dir, powerType);
             }
             break;
-        case 'shield':
+        case 'spell-shield':
             if(dir === 'down') {
                 _doCurrentSpell(state, dir, powerType);
             }
@@ -330,8 +330,8 @@ ControllerState.prototype.preload = function() {
     this.game.scale.pageAlignVertically = true;
 
     // Preload some assets
-    this.load.image('icon-fire', '../static/assets/icon-fire.png');
-    this.load.image('icon-shield', '../static/assets/icon-shield.png');
+    this.load.image('icon-fire', '/static/assets/images/icon-fire.png');
+    this.load.image('icon-shield', '/static/assets/images/icon-shield.png');
 };
 
 ControllerState.prototype.create = function() {

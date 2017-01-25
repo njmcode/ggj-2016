@@ -6,6 +6,8 @@
 
 var CONFIG = {
 
+    assetsPath: "/static/assets/",
+
     debug: {
         enabled: false
     },
