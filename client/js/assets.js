@@ -17,8 +17,6 @@ var assets = {
     // ui, scenes and images are standard image files.
     // Format is [key, path]
     images: [
-        'icon-fire',
-        'icon-shield',
         'logo',
         'starfield',
         'layer1',
@@ -35,22 +33,12 @@ var assets = {
     audio: [
         'title-theme',
         'bgm',
-        'collide1',
         'collide2',
-        'collide3',
-        'collide4',
         'shield-collide1',
-        'shield-collide2',
-        'shield-collide3',
         'shield-collide4',
         'shield1',
         'shield2',
-        'shield3',
-        'shield4',
-        'shot1',
-        'shot2',
-        'shot3',
-        'shot4'
+        'shot3'
     ]
 };
 
