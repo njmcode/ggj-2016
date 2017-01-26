@@ -5,6 +5,8 @@
  * Initial state of the game when loaded.
  * Handles asset preloading, game setup, loader graphic, etc.
 **/
+var io = require('socket.io-client');
+
 var Assets = require('../assets');
 var CONFIG = require('../config');
 var _common = require('./_common');

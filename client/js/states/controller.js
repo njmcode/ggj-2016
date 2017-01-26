@@ -5,6 +5,7 @@
  * State for the controller UI logic.
 **/
 
+var io = require('socket.io-client');
 var CONFIG = require('../config');
 var gestureEngine = require('../ui/gestures');
 
