@@ -5,7 +5,6 @@
  * Entrypoint for controller-specific logic.
 **/
 
-require('p2');
 var PIXI = require('pixi');
 var Phaser = require('phaser');
 var CONFIG = require('./js/config');
