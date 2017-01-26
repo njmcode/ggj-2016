@@ -15,10 +15,19 @@ backend:
         - /src/node_modules
     links:
         - database
-    ports:
-        - 0.0.0.0:5000:5000
+    expose:
+        - "5000"
     working_dir: /src
     command: make run
+
+nginx:
+    build: nginx
+    volumes:
+        - ./static:/srv/static
+    links:
+        - backend
+    ports:
+        - 0.0.0.0:8080:80
 
 database:
     image: redis
