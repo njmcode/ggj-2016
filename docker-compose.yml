@@ -1,7 +1,7 @@
 frontend:
     image: node:7
     volumes:
-        - ./client:/src
+        - ./frontend:/src
         - ./static:/static
         - /src/node_modules
     working_dir: /src
@@ -10,7 +10,7 @@ frontend:
 backend:
     image: node:7
     volumes:
-        - ./server:/src
+        - ./backend:/src
         - ./static:/static
         - /src/node_modules
     links:
