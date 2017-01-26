@@ -19,10 +19,21 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
-            minimize: true,
             compress: {
+                sequences: true,
+                properties: false,
+                dead_code: true,
+                conditionals: true,
+                comparisons: true,
+                evaluate: true,
+                unused: true,
+                if_return: true,
+                join_vars: true,
                 drop_console: true
-            }
+            },
+            output: {
+            },
+            comments: false,
         })
     ],
     module: {
