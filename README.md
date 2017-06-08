@@ -1,5 +1,7 @@
 # DIGIMANCERS
 
+http://globalgamejam.org/2016/games/digimancers
+
 An apocalyptic battle for supremacy in an ancient ritual of pixellated sorcery! 
 Two players connect to the game via their devices and must cast spells to attack
 and defend. To attack, draw a carat (^) symbol and swipe it up the screen. To
