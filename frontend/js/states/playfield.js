@@ -175,7 +175,7 @@ PlayfieldState.prototype.create = function() {
         }
 
         // Player must have enough mana to cast the spell
-        cost = calcManaCost('spell-shot', false, data.power);
+        cost = calcManaCost('shot', false, data.power);
         if (state.wizards[fromSide].sprite.mana < cost) {
             console.log('fizzle - no mana!');
             state.wizards[fromSide].preppedSpell.kill();
@@ -241,7 +241,7 @@ PlayfieldState.prototype.create = function() {
         }
 
         // Player must have enough mana to cast the spell
-        cost = calcManaCost('spell-shield', false, data.power);
+        cost = calcManaCost('shield', false, data.power);
         if (state.wizards[atSide].sprite.mana < cost) {
             console.log('fizzle - no mana!');
             state.wizards[atSide].preppedSpell.kill();
